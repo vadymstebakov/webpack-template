@@ -1,12 +1,13 @@
 const path = require('path');
 const ip = require('ip');
-const HWP = require('html-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHTMLPlugin = require('script-ext-html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const CWP = require('copy-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
+const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
@@ -21,39 +22,68 @@ const optimization = () => {
 		config.minimizer = [
 			new OptimizeCssAssetWebpackPlugin(),
 			new TerserWebpackPlugin()
-		]
+		];
 	}
   
 	return config;
-}
+};
+
+const styleLoaders = ext => {
+	const loaders = [
+		{
+			loader: MiniCssExtractPlugin.loader,
+			options: {
+				hmr: isDev,
+				reloadAll: true
+			},
+		},
+		'css-loader'
+	];
+  
+	if (ext) loaders.push(ext);
+  
+	return loaders;
+};
+
+const fileLoaders = (outputPath, publicPath) => {
+	const loaders = [
+		{
+			loader: 'file-loader',
+			options: {
+				name: '[name].[ext]',
+				outputPath,
+				publicPath
+			}
+		}
+	];
+
+	return loaders;
+};
+
+const babelOptions = preset => {
+	const opts = {
+	  	presets: [
+			'@babel/preset-env'
+		]
+	};
+  
+	if (preset) opts.presets.push(preset);
+  
+	return opts;
+};
 
 const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`;
 
-module.exports = {
-	context: path.resolve(__dirname, 'src'),
-	mode: 'development',
-	entry: {
-		main: './js/script.js',
-	},
-	output: {
-		filename: `js/${filename('js')}`,
-   		path: path.resolve(__dirname, 'dist')
-	},
-	optimization: optimization(),
-	devServer: {
-		host: ip.address(),
-		port: 4200,
-		hot: isDev
-	},
-	plugins: [
-		new HWP({
+const plugins = () => {
+	const base = [
+		new HTMLWebpackPlugin({
 			template: './index.html',
 			inject: 'head',
 			minify: {
 				collapseWhitespace: isProd
 			}
 		}),
-		new HWP({
+		new HTMLWebpackPlugin({
 			filename: 'list.html',
 			template: './list.html',
 			inject: 'head',
@@ -65,65 +95,71 @@ module.exports = {
 			defer: ['main']
 		}),
 		new CleanWebpackPlugin(),
-		new CWP([
+		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, 'src/images/favicon.ico'),
-				to: path.resolve(__dirname, 'dist/images')
+				from: path.resolve(__dirname, 'src/images/**.*'),
+				to: path.resolve(__dirname, 'dist')
 			}
 		]),
 		new MiniCssExtractPlugin({
-			filename: `style/${filename('css')}`
+			filename: `styles/${filename('css')}`
 		})
-	],
+	];
+  
+	if (isProd) base.push(new BundleAnalyzerPlugin());
+  
+	return base;
+};
+
+module.exports = {
+	context: path.resolve(__dirname, 'src'),
+	mode: 'development',
+	entry: {
+		main: ['@babel/polyfill', './js/index.js'],
+	},
+	output: {
+		filename: `js/${filename('js')}`,
+   		path: path.resolve(__dirname, 'dist')
+	},
+	optimization: optimization(),
+	devServer: {
+		host: ip.address(),
+		port: 4200,
+		hot: isDev
+	},
+	devtool: isDev ? 'source-map' : '',
+	plugins: plugins(),
 	resolve: {
-		// extensions: ['.js', '.json', '.png'],
 		alias: {
-			// '@models': path.resolve(__dirname, 'src/models'),
 			'@': path.resolve(__dirname, 'src'),
 		}
 	},
 	module: {
 		rules: [
 			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				loader: {
+					loader: 'babel-loader',
+					options: babelOptions()
+				}
+			},
+			{
 				test: /\.css$/i,
-				use: [
-					{
-						loader: MiniCssExtractPlugin.loader,
-						options: {
-							options: {
-								
-							},
-							hrm: isDev,
-							reloadAll: true
-						},
-					},
-				  	'css-loader'
-				]
+				use: styleLoaders()
+			},
+			{
+				test: /\.s[ac]ss$/i,
+				use: styleLoaders('sass-loader')
 			},
 			{
 				test: /\.(png|jpe?g|svg|gif)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: '[name].[ext]',
-							outputPath: 'images',
-						}
-					}
-				],
+				use: fileLoaders('images', '../images')
 			},
 			{
 				test: /\.(ttf|eot|woff2|woff)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: '[name].[ext]',
-							outputPath: 'fonts',
-						}
-					}
-				],
+				use: fileLoaders('fonts', '../fonts')
 			}
 		]
 	}
-}
+};

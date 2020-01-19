@@ -1,13 +1,26 @@
 {
-  "parser": "babel-eslint",
-  "rules": {
-    "no-unused-vars": "warn"
-  },
-  "env": {
-    "es6": true,
-    "browser": true
-  },
-  "extends": [
-    "eslint:recommended"
-  ]
+    "env": {
+		"browser": true,
+		"node": true,
+        "commonjs": true,
+		"es6": true,
+		"jquery": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"globals": {
+		"Swiper": true,
+		"OverlayScrollbars": true
+    },
+    "rules": {
+        "indent": [2, "tab"],
+        "linebreak-style": 0,
+        "quotes": [2, "single"],
+        "semi": [2, "always"],
+		"no-empty": 0,
+		"no-mixed-spaces-and-tabs": 0
+	}
 }
