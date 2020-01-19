@@ -1,4 +1,5 @@
 @import "~normalize.css";
+@import "~swiper/css/swiper.css";
 @import "roboto.css";
 
 body {
@@ -17,7 +18,7 @@ h1 {
 }
 
 .logo {
-  background-image: url("../assets/webpack-logo.png");
+  background-image: url("../images/webpack-logo.png");
   background-size: cover;
   height: 200px;
   width: 200px;
@@ -26,4 +27,10 @@ h1 {
 
 .code {
   color: crimson;
+}
+.swiper-container {
+	height: 500px;
+}
+.swiper-slide {
+	background-color: #404545;
 }
