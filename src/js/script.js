@@ -1,7 +1,9 @@
 import * as $ from 'jquery';
 import * as Swiper from 'swiper/js/swiper';
 import Post from './models/Post';
+import init from './example';
 
+init();
 let post = new Post('Learning Webpack');
 
 $('pre').html(`${post.toString()}`);
@@ -25,19 +27,19 @@ function createAnalytics() {
 				return `Analytics is destroyed. Total clicks = ${counter}`;
 			}
 			return counter;
-		}
+		},
 	};
 }
 
 window.analytics = createAnalytics();
 
 new Swiper('.swiper-container', {
-	spaceBetween: 40
+	spaceBetween: 40,
 });
 
 $('.swiper-slide').css({
 	'background-image': 'url("images/webpack-logo.png")',
 	'background-repeat': 'no-repeat',
 	'background-position': 'center center',
-	'background-size': 'contain'
+	'background-size': 'contain',
 });

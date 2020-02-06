@@ -1,21 +1,21 @@
-/*Libs -------------------------------------------------------------------------*/ 
+/*Libs -------------------------------------------------------------------------*/
 @import "~swiper/css/swiper.css";
 
-/* Helpers ---------------------------------------------------------------------*/ 
-@import "./var";
-@import "./mixins";
-@import "./normalize";
+/* Helpers ---------------------------------------------------------------------*/
+@import "./modules/var";
+@import "./modules/mixins";
+@import "./modules/normalize";
 
 /* Fonts --------------------------------------------------------------------*/
-@import "./fonts";
+@import "./modules/fonts";
 
 /* Styles --------------------------------------------------------------------*/
-@import "./default-classes";
-@import "./header";
-@import "./footer";
-@import "./popups";
-@import "./components";
-@import "./base";
+@import "./modules/default-classes";
+@import "./modules/header";
+@import "./modules/footer";
+@import "./modules/popups";
+@import "./modules/components";
+@import "./modules/base";
 
 /* Media --------------------------------------------------------------------*/
-@import "./media";
+@import "./modules/mq";

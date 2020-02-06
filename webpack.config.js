@@ -14,34 +14,43 @@ const isProd = !isDev;
 const optimization = () => {
 	const config = {
 		splitChunks: {
-			chunks: 'all'
-		}
+			chunks: 'all',
+		},
 	};
-  
+
 	if (isProd) {
 		config.minimizer = [
 			new OptimizeCssAssetWebpackPlugin(),
-			new TerserWebpackPlugin()
+			new TerserWebpackPlugin(),
 		];
 	}
-  
+
 	return config;
 };
 
-const styleLoaders = ext => {
+const styleLoaders = () => {
 	const loaders = [
 		{
 			loader: MiniCssExtractPlugin.loader,
 			options: {
 				hmr: isDev,
-				reloadAll: true
+				reloadAll: true,
 			},
 		},
-		'css-loader'
+		{
+			loader: 'css-loader',
+			options: {
+				sourceMap: isDev,
+			},
+		},
+		{
+			loader: 'sass-loader',
+			options: {
+				sourceMap: isDev,
+			},
+		},
 	];
-  
-	if (ext) loaders.push(ext);
-  
+
 	return loaders;
 };
 
@@ -52,9 +61,9 @@ const fileLoaders = (outputPath, publicPath) => {
 			options: {
 				name: '[name].[ext]',
 				outputPath,
-				publicPath
-			}
-		}
+				publicPath,
+			},
+		},
 	];
 
 	return loaders;
@@ -62,17 +71,15 @@ const fileLoaders = (outputPath, publicPath) => {
 
 const babelOptions = preset => {
 	const opts = {
-	  	presets: [
-			'@babel/preset-env'
-		]
+		presets: ['@babel/preset-env'],
 	};
-  
+
 	if (preset) opts.presets.push(preset);
-  
+
 	return opts;
 };
 
-const filename = ext => isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`;
+const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
 
 const plugins = () => {
 	const base = [
@@ -80,34 +87,38 @@ const plugins = () => {
 			template: './index.html',
 			inject: 'head',
 			minify: {
-				collapseWhitespace: isProd
-			}
+				collapseWhitespace: isProd,
+			},
 		}),
 		new HTMLWebpackPlugin({
 			filename: 'list.html',
 			template: './list.html',
 			inject: 'head',
 			minify: {
-				collapseWhitespace: isProd
-			}
+				collapseWhitespace: isProd,
+			},
 		}),
 		new ScriptExtHTMLPlugin({
-			defer: ['main']
+			defer: ['main'],
 		}),
 		new CleanWebpackPlugin(),
 		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, 'src/images/**.*'),
-				to: path.resolve(__dirname, 'dist')
-			}
+				from: path.resolve(__dirname, 'src/images/**/**.*'),
+				to: path.resolve(__dirname, 'dist'),
+			},
+			{
+				from: path.resolve(__dirname, 'src/fonts/**/**.*'),
+				to: path.resolve(__dirname, 'dist'),
+			},
 		]),
 		new MiniCssExtractPlugin({
-			filename: `styles/${filename('css')}`
-		})
+			filename: `styles/${filename('css')}`,
+		}),
 	];
-  
+
 	if (isProd) base.push(new BundleAnalyzerPlugin());
-  
+
 	return base;
 };
 
@@ -119,20 +130,20 @@ module.exports = {
 	},
 	output: {
 		filename: `js/${filename('js')}`,
-   		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, 'dist'),
 	},
 	optimization: optimization(),
 	devServer: {
 		host: ip.address(),
 		port: 4200,
-		hot: isDev
+		hot: isDev,
 	},
 	devtool: isDev ? 'source-map' : '',
 	plugins: plugins(),
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, 'src'),
-		}
+		},
 	},
 	module: {
 		rules: [
@@ -141,25 +152,21 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: {
 					loader: 'babel-loader',
-					options: babelOptions()
-				}
+					options: babelOptions(),
+				},
 			},
 			{
-				test: /\.css$/i,
-				use: styleLoaders()
-			},
-			{
-				test: /\.s[ac]ss$/i,
-				use: styleLoaders('sass-loader')
+				test: /\.scss$/i,
+				use: styleLoaders(),
 			},
 			{
 				test: /\.(png|jpe?g|svg|gif)$/i,
-				use: fileLoaders('images', '../images')
+				use: fileLoaders('images', '../images'),
 			},
 			{
 				test: /\.(ttf|eot|woff2|woff)$/i,
-				use: fileLoaders('fonts', '../fonts')
-			}
-		]
-	}
+				use: fileLoaders('fonts', '../fonts'),
+			},
+		],
+	},
 };
