@@ -7,8 +7,8 @@
         "dev": "cross-env NODE_ENV=development webpack --mode development",
         "build": "cross-env NODE_ENV=production webpack --mode production",
         "watch": "cross-env NODE_ENV=development webpack --mode development --watch",
-		"start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
-		"status": "webpack --json > status.json && webpack-bundle-analyzer status.json"
+        "start": "cross-env NODE_ENV=development webpack-dev-server --mode development --open",
+        "status": "webpack --json > status.json && webpack-bundle-analyzer status.json"
     },
     "keywords": [
         "js",
