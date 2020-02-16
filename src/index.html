@@ -2,34 +2,24 @@
 <html lang="en">
 
 <head>
+	<title>Webpack template</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="icon" href="images/favicon/favicon.ico" type="image/ico">
-	<title>Webpack</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="images/icon" href="images/favicon/favicon.ico" type="image/ico">
 </head>
 
 <body>
-	<h1>Hello World!!!</h1>
-	<hr>
-	<div class="logo"></div>
-	<hr>
-	<pre class="code"></pre>
-	<hr>
-	<!-- Slider main container -->
-	<div class="swiper-container">
-		<!-- Additional required wrapper -->
-		<div class="swiper-wrapper">
-			<!-- Slides -->
-			<div class="swiper-slide"></div>
-			<div class="swiper-slide"></div>
-			<div class="swiper-slide"></div>
+	<div class="wrap-helper">
+		<div class="wrap-helper__inner">
+			<%= require('html-loader!./partials/header.html') %>
+			<h1>Webpack template</h1>
+			<hr/>
+			<img src="images/webpack-logo.png" alt="">
 		</div>
+		<%= require('html-loader!./partials/footer.html') %>
 	</div>
-	<hr>
-	<div class="card">SCSS</div>
-	<img src="images/webpack-logo.png" alt="">
-	<a href="#">Link</a>
 </body>
 
 </html>

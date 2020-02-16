@@ -1,4 +1,5 @@
 const path = require('path');
+const glob = require('glob');
 const ip = require('ip');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHTMLPlugin = require('script-ext-html-webpack-plugin');
@@ -11,6 +12,7 @@ const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
+// Optimization
 const optimization = () => {
 	const config = {
 		splitChunks: {
@@ -28,6 +30,37 @@ const optimization = () => {
 	return config;
 };
 
+// Pages
+const multiplesHTMLPages = () => {
+	const HTMLPages = [];
+	const files = glob.sync(path.resolve(__dirname, 'src/*.html'), {});
+
+	const sortFiles = files.filter(file => /[^index]\.html$/.test(file));
+
+	const fileNames = sortFiles.map(sortFile => {
+		const splitFile = sortFile.split('/');
+		return splitFile[splitFile.length - 1].replace(/\.html/i, '');
+	});
+
+	HTMLPages.push(...fileNames);
+
+	//TODO: Pages will display
+	console.log(`Pages: ${HTMLPages.join(', ')}`);
+
+	return HTMLPages.map(
+		HTMLPage =>
+			new HTMLWebpackPlugin({
+				filename: `${HTMLPage}.html`,
+				template: `./${HTMLPage}.html`,
+				inject: 'head',
+				minify: {
+					collapseWhitespace: isProd,
+				},
+			})
+	);
+};
+
+// Style loaders
 const styleLoaders = () => {
 	const loaders = [
 		{
@@ -54,6 +87,7 @@ const styleLoaders = () => {
 	return loaders;
 };
 
+// File loaders
 const fileLoaders = (outputPath, publicPath) => {
 	const loaders = [
 		{
@@ -69,6 +103,7 @@ const fileLoaders = (outputPath, publicPath) => {
 	return loaders;
 };
 
+// Babel options
 const babelOptions = preset => {
 	const opts = {
 		presets: ['@babel/preset-env'],
@@ -79,8 +114,10 @@ const babelOptions = preset => {
 	return opts;
 };
 
+// Filename
 const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
 
+// Plugins
 const plugins = () => {
 	const base = [
 		new HTMLWebpackPlugin({
@@ -90,25 +127,18 @@ const plugins = () => {
 				collapseWhitespace: isProd,
 			},
 		}),
-		new HTMLWebpackPlugin({
-			filename: 'list.html',
-			template: './list.html',
-			inject: 'head',
-			minify: {
-				collapseWhitespace: isProd,
-			},
-		}),
+		...multiplesHTMLPages(),
 		new ScriptExtHTMLPlugin({
 			defer: ['main'],
 		}),
 		new CleanWebpackPlugin(),
 		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, 'src/images/**/**.*'),
+				from: path.resolve(__dirname, 'src/images/favicon/**.*'),
 				to: path.resolve(__dirname, 'dist'),
 			},
 			{
-				from: path.resolve(__dirname, 'src/fonts/**/**.*'),
+				from: path.resolve(__dirname, 'src/images/symbol-sprite/**.*'),
 				to: path.resolve(__dirname, 'dist'),
 			},
 		]),
@@ -122,6 +152,7 @@ const plugins = () => {
 	return base;
 };
 
+// Webpack's module
 module.exports = {
 	context: path.resolve(__dirname, 'src'),
 	mode: 'development',
@@ -149,7 +180,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				exclude: /node_modules/,
+				include: /js/,
 				loader: {
 					loader: 'babel-loader',
 					options: babelOptions(),
@@ -161,11 +192,59 @@ module.exports = {
 			},
 			{
 				test: /\.(png|jpe?g|svg|gif)$/i,
-				use: fileLoaders('images', '../images'),
+				include: /images/,
+				use: fileLoaders(
+					(file, resourcePath, context) => {
+						const relativePath = path.relative(context, resourcePath);
+
+						if (/svg/i.test(relativePath)) {
+							return `images/svg/${file}`;
+						}
+
+						return `images/${file}`;
+					},
+					(file, resourcePath, context) => {
+						const relativePath = path.relative(context, resourcePath);
+
+						if (/svg/i.test(relativePath)) {
+							return `../images/svg/${file}`;
+						}
+
+						return `../images/${file}`;
+					}
+				),
 			},
 			{
-				test: /\.(ttf|eot|woff2|woff)$/i,
-				use: fileLoaders('fonts', '../fonts'),
+				test: /\.(ttf|eot|woff2|woff|svg)$/i,
+				include: /fonts/,
+				use: fileLoaders(
+					(file, resourcePath, context) => {
+						const relativePath = path.relative(context, resourcePath);
+
+						if (/Roboto/i.test(relativePath)) {
+							return `fonts/Roboto/${file}`;
+						}
+
+						if (/Arial/i.test(relativePath)) {
+							return `fonts/Arial/${file}`;
+						}
+
+						return `fonts/${file}`;
+					},
+					(file, resourcePath, context) => {
+						const relativePath = path.relative(context, resourcePath);
+
+						if (/Roboto/i.test(relativePath)) {
+							return `../fonts/Roboto/${file}`;
+						}
+
+						if (/Arial/i.test(relativePath)) {
+							return `fonts/Arial/${file}`;
+						}
+
+						return `../fonts/${file}`;
+					}
+				),
 			},
 		],
 	},

@@ -1,3 +1,2 @@
-import './babel';
-import './script';
+import './app';
 import './../styles/styles.scss';
