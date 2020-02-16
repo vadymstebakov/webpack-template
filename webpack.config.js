@@ -134,11 +134,7 @@ const plugins = () => {
 		new CleanWebpackPlugin(),
 		new CopyWebpackPlugin([
 			{
-				from: path.resolve(__dirname, 'src/images/favicon/**.*'),
-				to: path.resolve(__dirname, 'dist'),
-			},
-			{
-				from: path.resolve(__dirname, 'src/images/symbol-sprite/**.*'),
+				from: path.resolve(__dirname, 'src/images/**/**.*'),
 				to: path.resolve(__dirname, 'dist'),
 			},
 		]),
