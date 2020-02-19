@@ -44,7 +44,7 @@ const multiplesHTMLPages = () => {
 
 	HTMLPages.push(...fileNames);
 
-	//NOTE: Pages will display
+	//NOTE: How many pages you will get
 	console.log(`Pages: ${HTMLPages.join(', ')}`);
 
 	return HTMLPages.map(
