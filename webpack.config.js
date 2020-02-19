@@ -44,7 +44,7 @@ const multiplesHTMLPages = () => {
 
 	HTMLPages.push(...fileNames);
 
-	//TODO: Pages will display
+	//NOTE: Pages will display
 	console.log(`Pages: ${HTMLPages.join(', ')}`);
 
 	return HTMLPages.map(
@@ -114,6 +114,22 @@ const babelOptions = preset => {
 	return opts;
 };
 
+// Js loaders
+const jsLoaders = () => {
+	const loaders = [
+		{
+			loader: 'babel-loader',
+			options: babelOptions(),
+		},
+	];
+
+	if (isDev) {
+		loaders.push('eslint-loader');
+	}
+
+	return loaders;
+};
+
 // Filename
 const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
 
@@ -177,10 +193,7 @@ module.exports = {
 			{
 				test: /\.js$/,
 				include: /js/,
-				loader: {
-					loader: 'babel-loader',
-					options: babelOptions(),
-				},
+				use: jsLoaders(),
 			},
 			{
 				test: /\.scss$/i,
@@ -191,7 +204,10 @@ module.exports = {
 				include: /images/,
 				use: fileLoaders(
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(context, resourcePath);
+						const relativePath = path.relative(
+							context,
+							resourcePath
+						);
 
 						if (/svg/i.test(relativePath)) {
 							return `images/svg/${file}`;
@@ -200,7 +216,10 @@ module.exports = {
 						return `images/${file}`;
 					},
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(context, resourcePath);
+						const relativePath = path.relative(
+							context,
+							resourcePath
+						);
 
 						if (/svg/i.test(relativePath)) {
 							return `../images/svg/${file}`;
@@ -215,7 +234,10 @@ module.exports = {
 				include: /fonts/,
 				use: fileLoaders(
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(context, resourcePath);
+						const relativePath = path.relative(
+							context,
+							resourcePath
+						);
 
 						if (/Roboto/i.test(relativePath)) {
 							return `fonts/Roboto/${file}`;
@@ -228,7 +250,10 @@ module.exports = {
 						return `fonts/${file}`;
 					},
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(context, resourcePath);
+						const relativePath = path.relative(
+							context,
+							resourcePath
+						);
 
 						if (/Roboto/i.test(relativePath)) {
 							return `../fonts/Roboto/${file}`;

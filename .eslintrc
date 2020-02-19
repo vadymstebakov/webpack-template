@@ -1,4 +1,5 @@
 {
+	"parser": "babel-eslint",
     "env": {
 		"browser": true,
 		"node": true,
@@ -11,15 +12,15 @@
         "ecmaVersion": 2018,
 		"sourceType": "module"
 	},
-	"globals": {
-		"Swiper": true
-    },
     "rules": {
         "indent": [2, "tab"],
         "linebreak-style": 0,
         "quotes": [2, "single"],
         "semi": [2, "always"],
 		"no-empty": 0,
-		"no-mixed-spaces-and-tabs": 0
+		"no-mixed-spaces-and-tabs": 0,
+		"no-unused-vars": "warn",
+		"no-console": "warn",
+		"no-extra-semi": "warn"
 	}
 }
