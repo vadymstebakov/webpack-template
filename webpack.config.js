@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
+const autoprefixer = require('autoprefixer');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 
@@ -73,6 +74,13 @@ const styleLoaders = () => {
 		{
 			loader: 'css-loader',
 			options: {
+				sourceMap: isDev,
+			},
+		},
+		{
+			loader: 'postcss-loader',
+			options: {
+				plugins: [autoprefixer()],
 				sourceMap: isDev,
 			},
 		},
@@ -204,10 +212,7 @@ module.exports = {
 				include: /images/,
 				use: fileLoaders(
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(
-							context,
-							resourcePath
-						);
+						const relativePath = path.relative(context, resourcePath);
 
 						if (/svg/i.test(relativePath)) {
 							return `images/svg/${file}`;
@@ -216,10 +221,7 @@ module.exports = {
 						return `images/${file}`;
 					},
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(
-							context,
-							resourcePath
-						);
+						const relativePath = path.relative(context, resourcePath);
 
 						if (/svg/i.test(relativePath)) {
 							return `../images/svg/${file}`;
@@ -234,10 +236,7 @@ module.exports = {
 				include: /fonts/,
 				use: fileLoaders(
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(
-							context,
-							resourcePath
-						);
+						const relativePath = path.relative(context, resourcePath);
 
 						if (/Roboto/i.test(relativePath)) {
 							return `fonts/Roboto/${file}`;
@@ -250,10 +249,7 @@ module.exports = {
 						return `fonts/${file}`;
 					},
 					(file, resourcePath, context) => {
-						const relativePath = path.relative(
-							context,
-							resourcePath
-						);
+						const relativePath = path.relative(context, resourcePath);
 
 						if (/Roboto/i.test(relativePath)) {
 							return `../fonts/Roboto/${file}`;
