@@ -3,11 +3,8 @@ import json from '../assets/json.json';
 
 console.log(json);
 
-// Set symbol sprite
-let symbolSprite = new SymbolSprite(
-	'../images/symbol-sprite/symbol-sprite.html'
-);
-symbolSprite.toInject();
+// Inject symbol sprite
+SymbolSprite.inject('./../images/symbol-sprite/symbol-sprite.html');
 
 // Resize function
 (function fnResize() {
