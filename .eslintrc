@@ -13,7 +13,7 @@
 		"sourceType": "module"
 	},
     "rules": {
-        "indent": [2, "tab"],
+        "indent": 0,
         "linebreak-style": 0,
         "quotes": [2, "single"],
         "semi": [2, "always"],

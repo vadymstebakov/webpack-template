@@ -11,8 +11,11 @@ const TerserWebpackPlugin = require('terser-webpack-plugin');
 const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer');
 const autoprefixer = require('autoprefixer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const SshWebpackPlugin = require('ssh-webpack-plugin');
+
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
+const isDeploy = process.env.DEPLOY === 'deployment';
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
 // Optimization
@@ -31,6 +34,19 @@ const optimization = () => {
 	}
 
 	return config;
+};
+
+// Deploy
+const deploy = () => {
+	return new SshWebpackPlugin({
+		host: 'host',
+		port: 'port',
+		username: 'username',
+		password: 'password',
+		cover: false,
+		from: path.resolve(__dirname, 'dist'),
+		to: 'to',
+	});
 };
 
 // Pages
@@ -177,6 +193,7 @@ const plugins = () => {
 	];
 
 	if (isProd) base.push(new BundleAnalyzerPlugin());
+	if (isDeploy) base.push(deploy());
 
 	return base;
 };
@@ -196,9 +213,9 @@ module.exports = {
 	devServer: {
 		host: ip.address(),
 		port: 4200,
-		contentBase: path.join(__dirname, 'dist'),
+		// contentBase: path.join(__dirname, 'dist'),
 		hot: isDev,
-		watchContentBase: isDev,
+		// watchContentBase: isDev,
 		overlay: {
 			errors: true,
 		},
