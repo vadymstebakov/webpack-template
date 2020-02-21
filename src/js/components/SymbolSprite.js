@@ -12,18 +12,14 @@ export default class SymbolSprite {
 			'localStorage' in window && window['localStorage'] !== null;
 		let data;
 
-		const insertIT = () =>
-			document.body.insertAdjacentHTML('afterbegin', data);
+		const insertIT = () => document.body.insertAdjacentHTML('afterbegin', data);
 
 		const insert = () =>
 			document.body
 				? insertIT()
 				: document.addEventListener('DOMContentLoaded', insertIT);
 
-		if (
-			isLocalStorage &&
-			localStorage.getItem('inlineSVGrev') == revision
-		) {
+		if (isLocalStorage && localStorage.getItem('inlineSVGrev') == revision) {
 			data = localStorage.getItem('inlineSVGdata');
 			if (data) {
 				insert();
@@ -32,7 +28,6 @@ export default class SymbolSprite {
 		}
 
 		try {
-			console.log(path);
 			const request = new XMLHttpRequest();
 			request.open('GET', path);
 			request.onload = function() {
