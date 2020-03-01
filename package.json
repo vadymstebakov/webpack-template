@@ -17,10 +17,10 @@
 	"author": "Vadym Stebakov <vadim.stebakov.94@gmail.com>",
 	"license": "ISC",
 	"devDependencies": {
-		"@babel/core": "^7.8.4",
-		"@babel/preset-env": "^7.8.4",
+		"@babel/core": "^7.8.6",
+		"@babel/preset-env": "^7.8.6",
 		"autoprefixer": "^9.7.4",
-		"babel-eslint": "^10.0.3",
+		"babel-eslint": "^10.1.0",
 		"babel-loader": "^8.0.6",
 		"clean-webpack-plugin": "^3.0.0",
 		"copy-webpack-plugin": "^5.1.1",
@@ -51,7 +51,7 @@
 	"dependencies": {
 		"@babel/polyfill": "^7.8.3",
 		"jquery": "^3.4.1",
-		"swiper": "^5.3.1"
+		"swiper": "^5.3.6"
 	},
 	"browserslist": "> 0.2%, not dead"
 }

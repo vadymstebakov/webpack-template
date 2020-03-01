@@ -1,4 +1,5 @@
 import SymbolSprite from './components/SymbolSprite';
+import Resize from './components/Resize';
 import json from '../assets/json.json';
 
 console.log(json);
@@ -7,13 +8,4 @@ console.log(json);
 SymbolSprite.inject('./../images/symbol-sprite/symbol-sprite.html');
 
 // Resize function
-(function fnResize() {
-	let doit;
-
-	function resized() {}
-
-	window.onresize = () => {
-		clearTimeout(doit);
-		doit = setTimeout(resized, 50);
-	};
-})();
+Resize.init();
