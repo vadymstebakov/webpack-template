@@ -104,6 +104,7 @@ const fileLoaders = (outputPath, publicPath) => {
 		{
 			loader: 'file-loader',
 			options: {
+				esModule: false,
 				name: '[name].[ext]',
 				outputPath,
 				publicPath,
@@ -197,8 +198,8 @@ module.exports = {
 	devServer: {
 		compress: true,
 		host: ip.address(),
-		port: 4200,
-		hot: isDev,
+		port: 3000,
+		// hot: isDev,
 		overlay: {
 			errors: true,
 		},
@@ -270,7 +271,7 @@ module.exports = {
 						}
 
 						if (/Arial/i.test(relativePath)) {
-							return `fonts/Arial/${file}`;
+							return `../fonts/Arial/${file}`;
 						}
 
 						return `../fonts/${file}`;
