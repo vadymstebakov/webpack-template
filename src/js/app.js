@@ -5,7 +5,7 @@ import json from '../assets/json.json';
 console.log(json);
 
 // Inject symbol sprite
-SymbolSprite.inject('./../images/symbol-sprite/symbol-sprite.html');
+// SymbolSprite.inject('./../images/symbol-sprite/symbol-sprite.html');
 
 // Resize function
 Resize.init();
