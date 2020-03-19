@@ -51,6 +51,7 @@
 	"dependencies": {
 		"@babel/polyfill": "^7.8.7",
 		"jquery": "^3.4.1",
+		"node-before-polyfill": "^1.0.0",
 		"swiper": "^5.3.6"
 	},
 	"browserslist": "> 0.2%, not dead"
