@@ -18,127 +18,127 @@ const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
 // Optimization
 const optimization = () => {
-	const config = {
-		splitChunks: {
-			chunks: 'all',
-		},
-	};
+    const config = {
+        splitChunks: {
+            chunks: 'all',
+        },
+    };
 
-	if (isProd) {
-		config.minimizer = [
-			new OptimizeCssAssetWebpackPlugin(),
-			new TerserWebpackPlugin(),
-		];
-	}
+    if (isProd) {
+        config.minimizer = [
+            new OptimizeCssAssetWebpackPlugin(),
+            new TerserWebpackPlugin(),
+        ];
+    }
 
-	return config;
+    return config;
 };
 
 // Pages
 const multiplesHTMLPages = () => {
-	const HTMLPages = [];
-	const files = glob.sync(path.resolve(__dirname, 'src/*.html'), {});
+    const HTMLPages = [];
+    const files = glob.sync(path.resolve(__dirname, 'src/*.html'), {});
 
-	const sortFiles = files.filter(file => /[^index]\.html$/.test(file));
+    const sortFiles = files.filter(file => /[^index]\.html$/.test(file));
 
-	const fileNames = sortFiles.map(sortFile => {
-		const splitFile = sortFile.split('/');
-		return splitFile[splitFile.length - 1].replace(/\.html/i, '');
-	});
+    const fileNames = sortFiles.map(sortFile => {
+        const splitFile = sortFile.split('/');
+        return splitFile[splitFile.length - 1].replace(/\.html/i, '');
+    });
 
-	HTMLPages.push(...fileNames);
+    HTMLPages.push(...fileNames);
 
-	//NOTE: How many pages you will get
-	console.log(`Pages: ${HTMLPages.join(', ')}`);
+    //NOTE: How many pages you will get
+    console.log(`Pages: ${HTMLPages.join(', ')}`);
 
-	return HTMLPages.map(
-		HTMLPage =>
-			new HTMLWebpackPlugin({
-				filename: `${HTMLPage}.html`,
-				template: `./${HTMLPage}.html`,
-				inject: 'head',
-				minify: {
-					collapseWhitespace: isProd,
-				},
-			})
-	);
+    return HTMLPages.map(
+        HTMLPage =>
+            new HTMLWebpackPlugin({
+                filename: `${HTMLPage}.html`,
+                template: `./${HTMLPage}.html`,
+                inject: 'head',
+                minify: {
+                    collapseWhitespace: isProd,
+                },
+            })
+    );
 };
 
 // Style loaders
 const styleLoaders = () => {
-	const loaders = [
-		{
-			loader: MiniCssExtractPlugin.loader,
-			options: {
-				hmr: isDev,
-				reloadAll: true,
-				publicPath: '../',
-			},
-		},
-		{
-			loader: 'css-loader',
-			options: {
-				sourceMap: isDev,
-			},
-		},
-		{
-			loader: 'postcss-loader',
-			options: {
-				plugins: [autoprefixer()],
-				sourceMap: isDev,
-			},
-		},
-		{
-			loader: 'sass-loader',
-			options: {
-				sourceMap: isDev,
-			},
-		},
-	];
+    const loaders = [
+        {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+                hmr: isDev,
+                reloadAll: true,
+                publicPath: '../',
+            },
+        },
+        {
+            loader: 'css-loader',
+            options: {
+                sourceMap: isDev,
+            },
+        },
+        {
+            loader: 'postcss-loader',
+            options: {
+                plugins: [autoprefixer()],
+                sourceMap: isDev,
+            },
+        },
+        {
+            loader: 'sass-loader',
+            options: {
+                sourceMap: isDev,
+            },
+        },
+    ];
 
-	return loaders;
+    return loaders;
 };
 
 // File loaders
 const fileLoaders = () => {
-	const loaders = [
-		{
-			loader: 'file-loader',
-			options: {
-				esModule: false,
-				name: '[path][name].[ext]',
-			},
-		},
-	];
+    const loaders = [
+        {
+            loader: 'file-loader',
+            options: {
+                esModule: false,
+                name: '[path][name].[ext]',
+            },
+        },
+    ];
 
-	return loaders;
+    return loaders;
 };
 
 // Babel options
 const babelOptions = preset => {
-	const opts = {
-		presets: ['@babel/preset-env'],
-	};
+    const opts = {
+        presets: ['@babel/preset-env'],
+    };
 
-	if (preset) opts.presets.push(preset);
+    if (preset) opts.presets.push(preset);
 
-	return opts;
+    return opts;
 };
 
 // Js loaders
 const jsLoaders = () => {
-	const loaders = [
-		{
-			loader: 'babel-loader',
-			options: babelOptions(),
-		},
-	];
+    const loaders = [
+        {
+            loader: 'babel-loader',
+            options: babelOptions(),
+        },
+    ];
 
-	if (isDev) {
-		loaders.push('eslint-loader');
-	}
+    if (isDev) {
+        loaders.push('eslint-loader');
+    }
 
-	return loaders;
+    return loaders;
 };
 
 // Filename
@@ -146,91 +146,91 @@ const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
 
 // Plugins
 const plugins = () => {
-	const base = [
-		new HTMLWebpackPlugin({
-			template: './index.html',
-			inject: 'head',
-			minify: {
-				collapseWhitespace: isProd,
-			},
-		}),
-		...multiplesHTMLPages(),
-		new ScriptExtHTMLPlugin({
-			defer: ['main'],
-		}),
-		new CleanWebpackPlugin(),
-		new CopyWebpackPlugin([
-			{
-				from: path.resolve(__dirname, 'src/images/**/**.*'),
-				to: path.resolve(__dirname, 'dist'),
-			},
-		]),
-		new MiniCssExtractPlugin({
-			filename: `styles/${filename('css')}`,
-		}),
-		new ImageminPlugin({
-			disable: isDev,
-			test: regexImages,
-			pngquant: {
-				quality: '95-100',
-			},
-		}),
-	];
+    const base = [
+        new HTMLWebpackPlugin({
+            template: './index.html',
+            inject: 'head',
+            minify: {
+                collapseWhitespace: isProd,
+            },
+        }),
+        ...multiplesHTMLPages(),
+        new ScriptExtHTMLPlugin({
+            defer: ['main'],
+        }),
+        new CleanWebpackPlugin(),
+        new CopyWebpackPlugin([
+            {
+                from: path.resolve(__dirname, 'src/images/**/**.*'),
+                to: path.resolve(__dirname, 'dist'),
+            },
+        ]),
+        new MiniCssExtractPlugin({
+            filename: `styles/${filename('css')}`,
+        }),
+        new ImageminPlugin({
+            disable: isDev,
+            test: regexImages,
+            pngquant: {
+                quality: '95-100',
+            },
+        }),
+    ];
 
-	if (isProd) base.push(new BundleAnalyzerPlugin());
+    if (isProd) base.push(new BundleAnalyzerPlugin());
 
-	return base;
+    return base;
 };
 
 // Webpack's module
 module.exports = {
-	context: path.resolve(__dirname, 'src'),
-	mode: 'development',
-	entry: {
-		main: ['@babel/polyfill', 'node-before-polyfill', './js/index.js'],
-	},
-	output: {
-		filename: `js/${filename('js')}`,
-		path: path.resolve(__dirname, 'dist'),
-	},
-	optimization: optimization(),
-	devServer: {
-		compress: true,
-		host: ip.address(),
-		port: 3000,
-		// hot: isDev,
-		overlay: {
-			errors: true,
-		},
-	},
-	devtool: isDev ? 'source-map' : '',
-	plugins: plugins(),
-	resolve: {
-		alias: {
-			'@': path.resolve(__dirname, 'src'),
-		},
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				include: /js/,
-				use: jsLoaders(),
-			},
-			{
-				test: /\.scss$/i,
-				use: styleLoaders(),
-			},
-			{
-				test: regexImages,
-				include: /images/,
-				use: fileLoaders(),
-			},
-			{
-				test: /\.(ttf|eot|woff2|woff|svg)$/i,
-				include: /fonts/,
-				use: fileLoaders(),
-			},
-		],
-	},
+    context: path.resolve(__dirname, 'src'),
+    mode: 'development',
+    entry: {
+        main: ['@babel/polyfill', 'node-before-polyfill', './js/index.js'],
+    },
+    output: {
+        filename: `js/${filename('js')}`,
+        path: path.resolve(__dirname, 'dist'),
+    },
+    optimization: optimization(),
+    devServer: {
+        compress: true,
+        host: ip.address(),
+        port: 3000,
+        // hot: isDev,
+        overlay: {
+            errors: true,
+        },
+    },
+    devtool: isDev ? 'source-map' : '',
+    plugins: plugins(),
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+        },
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                include: /js/,
+                use: jsLoaders(),
+            },
+            {
+                test: /\.scss$/i,
+                use: styleLoaders(),
+            },
+            {
+                test: regexImages,
+                include: /images/,
+                use: fileLoaders(),
+            },
+            {
+                test: /\.(ttf|eot|woff2|woff|svg)$/i,
+                include: /fonts/,
+                use: fileLoaders(),
+            },
+        ],
+    },
 };

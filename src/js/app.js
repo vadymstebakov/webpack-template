@@ -1,4 +1,4 @@
-import SymbolSprite from './components/SymbolSprite';
+// import SymbolSprite from './components/SymbolSprite';
 import Resize from './components/Resize';
 import json from '../assets/json.json';
 
