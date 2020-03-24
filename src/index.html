@@ -15,76 +15,76 @@
         <div class="wrap-helper__inner">
             <%= require('html-loader!./partials/header.html') %>
             <h1>Webpack template</h1>
-			<hr />
-			
-            <div class="ui-select">
-                <div class="ui-select__input-wrap">
-                    <div class="ui-select__input-inner" data-placeholder="Placeholder">
+            <hr />
+            <input id="mask" type="text">
+            <div class="multiselect">
+                <div class="multiselect__input-wrap">
+                    <div class="multiselect__input-inner" data-placeholder="Placeholder">
                         <input type="text" readonly>
                         <label></label>
                     </div>
                 </div>
                 <!-- adding/remove data-multi attribute toggles between single/multi select -->
-                <ul class="ui-select__options">
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                <ul class="multiselect__options">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">Black Sabbath</span>
+                            <span class="multiselect__option-text">Black Sabbath</span>
                         </label>
                     </li>
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">Metallica</span>
+                            <span class="multiselect__option-text">Metallica</span>
                         </label>
                     </li>
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">AC/DC</span>
+                            <span class="multiselect__option-text">AC/DC</span>
                         </label>
                     </li>
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">Volbeat</span>
+                            <span class="multiselect__option-text">Volbeat</span>
                         </label>
                     </li>
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">Disturbed</span>
+                            <span class="multiselect__option-text">Disturbed</span>
                         </label>
                     </li>
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">Manowar</span>
+                            <span class="multiselect__option-text">Manowar</span>
                         </label>
                     </li>
-                    <li class="ui-select__option">
-                        <label class="ui-select__option-label">
+                    <li class="multiselect__option">
+                        <label class="multiselect__option-label">
                             <input type="checkbox">
                             <span></span>
-                            <span class="ui-select__option-text">Something</span>
+                            <span class="multiselect__option-text">Something</span>
                         </label>
                     </li>
                 </ul>
-			</div>
-			
+            </div>
+
             <!-- <svg>
                 <use xlink:href="#icon-home"></use>
             </svg> -->
             <!-- <img src="images/webpack-logo.png" alt=""> -->
-		</div>
-            <%= require('html-loader!./partials/footer.html') %>
         </div>
+        <%= require('html-loader!./partials/footer.html') %>
+    </div>
 </body>
 
 </html>

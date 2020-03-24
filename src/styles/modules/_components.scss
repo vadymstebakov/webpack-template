@@ -1,4 +1,5 @@
-.ui-select {
+// MultiSelect
+.multiselect {
     margin: 40px auto 0;
     display: block;
     max-width: 350px;
@@ -98,7 +99,7 @@
         }
     }
 
-    ul.ui-select__options {
+    ul.multiselect__options {
         position: absolute;
         top: 100%;
         left: 0;
@@ -120,14 +121,14 @@
     &__option {
         padding: 0;
 
-        &+.ui-select__option {
+        &+.multiselect__option {
             margin-top: 1em;
         }
 
         input[type="checkbox"] {
             display: none;
 
-            &:checked~span:not(.ui-select__option-text) {
+            &:checked~span:not(.multiselect__option-text) {
                 box-shadow: inset 0px 0px 0px .5em #000;
 
                 &::after {
@@ -136,7 +137,7 @@
             }
         }
 
-        span:not(.ui-select__option-text) {
+        span:not(.multiselect__option-text) {
             position: relative;
             width: 1.1em;
             height: 1.1em;
@@ -176,7 +177,7 @@
 
     &--active {
 
-        .ui-select__input-inner {
+        .multiselect__input-inner {
 
             &::before {
                 top: -5px;
@@ -188,7 +189,7 @@
             }
         }
 
-        ul.ui-select__options {
+        ul.multiselect__options {
             opacity: 1;
 			max-height: 150px;
             box-shadow: 0px -35px 70px 25px rgba(0, 0, 0, 0.11);
