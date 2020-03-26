@@ -1,5 +1,3 @@
-import {format} from 'prettier';
-
 const checkValue = input => input.value !== '';
 
 export default class DigitInput {
@@ -34,36 +32,41 @@ export default class DigitInput {
     }
 
     static init() {
-        const from = document.querySelector('.form');
-        const inputs = [...from.getElementsByClassName('input')];
+        const form = document.querySelector('.form');
+        const inputs = [...form.getElementsByClassName('input')];
         let initialValue;
-        from.reset();
-        from.addEventListener(
-            'keyup',
+        form.reset();
+        form.addEventListener(
+            'keydown',
             e => {
                 let key = e.keyCode || e.charCode;
-                if (key === 9) return e.preventDefault();
+
+                if (key === 9) {
+                    return e.preventDefault();
+                } else if (key >= 37 && key <= 40) {
+                    return e.preventDefault();
+                }
             },
             false
         );
 
-        from.addEventListener('paste', e => e.preventDefault(), false);
-        from.addEventListener('cut', e => e.preventDefault(), false);
+        form.addEventListener('paste', e => e.preventDefault(), false);
+        form.addEventListener('cut', e => e.preventDefault(), false);
 
-        format.addEventListener(
-            'focus',
+        form.addEventListener(
+            'click',
             function(e) {
                 const curInput = e.target.closest('.input');
 
                 if (!curInput) return;
 
-                curInput.selectionStart = curInput.selectionEnd =
-                    curInput.value.length;
+                let valLen = curInput.value.length;
+                curInput.setSelectionRange(valLen, valLen);
             },
             false
         );
 
-        from.addEventListener('input', function(e) {
+        form.addEventListener('input', function(e) {
             const curInput = e.target;
 
             DigitInput._enteringDigits(curInput);

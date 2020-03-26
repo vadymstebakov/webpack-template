@@ -39,9 +39,9 @@ const multiplesHTMLPages = () => {
     const HTMLPages = [];
     const files = glob.sync(path.resolve(__dirname, 'src/*.html'), {});
 
-    const sortFiles = files.filter(file => /[^index]\.html$/.test(file));
+    const sortFiles = files.filter((file) => /[^index]\.html$/.test(file));
 
-    const fileNames = sortFiles.map(sortFile => {
+    const fileNames = sortFiles.map((sortFile) => {
         const splitFile = sortFile.split('/');
         return splitFile[splitFile.length - 1].replace(/\.html/i, '');
     });
@@ -52,7 +52,7 @@ const multiplesHTMLPages = () => {
     console.log(`Pages: ${HTMLPages.join(', ')}`);
 
     return HTMLPages.map(
-        HTMLPage =>
+        (HTMLPage) =>
             new HTMLWebpackPlugin({
                 filename: `${HTMLPage}.html`,
                 template: `./${HTMLPage}.html`,
@@ -115,7 +115,7 @@ const fileLoaders = () => {
 };
 
 // Babel options
-const babelOptions = preset => {
+const babelOptions = (preset) => {
     const opts = {
         presets: ['@babel/preset-env'],
     };
@@ -142,7 +142,8 @@ const jsLoaders = () => {
 };
 
 // Filename
-const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
+const filename = (ext) =>
+    isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`;
 
 // Plugins
 const plugins = () => {
@@ -187,12 +188,7 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: [
-            '@babel/polyfill',
-            'element-closest-polyfill',
-            'node-before-polyfill',
-            './js/index.js',
-        ],
+        main: ['@babel/polyfill', './js/index.js'],
     },
     output: {
         filename: `js/${filename('js')}`,
