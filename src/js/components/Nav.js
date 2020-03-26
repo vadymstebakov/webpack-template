@@ -22,11 +22,13 @@ export default class Nav {
         if (state.requiredSpace > state.availableSpace) {
             prependChild($hlinks, $vlinks.lastElementChild);
             state.numOfVisibleItems -= 1;
+            Nav.check();
         } else if (
             state.availableSpace > state.breakWidths[state.numOfVisibleItems]
         ) {
             $vlinks.appendChild($hlinks.firstElementChild);
             state.numOfVisibleItems += 1;
+            Nav.check();
         }
 
         $btn.setAttribute('count', state.numOfItems - state.numOfVisibleItems);

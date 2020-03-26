@@ -17,14 +17,14 @@
             <h1>Webpack template</h1>
             <hr />
             <input id="mask" type="text">
-            <div class="multiselect">
+
+            <form class="multiselect">
                 <div class="multiselect__input-wrap">
                     <div class="multiselect__input-inner" data-placeholder="Placeholder">
-                        <input type="text" readonly>
+                        <input type="text" readonly value="">
                         <label></label>
                     </div>
                 </div>
-                <!-- adding/remove data-multi attribute toggles between single/multi select -->
                 <ul class="multiselect__options">
                     <li class="multiselect__option">
                         <label class="multiselect__option-label">
@@ -76,8 +76,13 @@
                         </label>
                     </li>
                 </ul>
-            </div>
-
+            </form>
+            <form class="form">
+                <input type="tel" autocomplete="off" maxlength="2" class="input" placeholder="•">
+                <input type="tel" autocomplete="off" maxlength="2" disabled class="input" placeholder="•">
+                <input type="tel" autocomplete="off" maxlength="2" disabled class="input" placeholder="•">
+                <input type="tel" autocomplete="off" maxlength="1" disabled class="input" placeholder="•">
+            </form>
             <!-- <svg>
                 <use xlink:href="#icon-home"></use>
             </svg> -->

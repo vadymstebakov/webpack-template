@@ -3,6 +3,7 @@ import ID from 'generator-unique-id';
 import MultiSelect from './components/MultiSelect';
 import Inputmask from 'inputmask';
 import Nav from './components/Nav';
+import DigitInput from './components/DigitInput';
 import Resize from './components/Resize';
 // import json from '../assets/json.json';
 
@@ -12,9 +13,9 @@ import Resize from './components/Resize';
 Inputmask({
     mask: '99/99/9999',
     showMaskOnHover: false,
-    oncomplete(opt) {
-        console.log(opt);
-    },
+    // oncomplete(opt) {
+    //     console.log(opt);
+    // },
     // onKeyValidation(key, res) {
     //     console.log(`${key}: ${JSON.stringify(res)}`);
     // },
@@ -25,11 +26,15 @@ Inputmask({
 
 if (document.querySelectorAll('.multiselect').length) {
     [...document.querySelectorAll('.multiselect')].forEach((select, i, arr) => {
+        select.reset();
         select.style.setProperty('--z-index', arr.length - i);
         select.id = ID();
         MultiSelect.init(select.id);
     });
 }
+
+// digit input init
+DigitInput.init();
 
 // Navigation init
 Nav.init();

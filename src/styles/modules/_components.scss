@@ -10,8 +10,8 @@
     z-index: var(--z-index);
 
     &__input-wrap {
-		position: relative;
-		z-index: 1;
+        position: relative;
+        z-index: 1;
         padding: 2em 1.15em 0;
         background-color: #fff;
     }
@@ -108,18 +108,20 @@
         padding: 0;
         list-style: none;
         background-color: #fff;
-        padding: 1.15em;
+        padding: 0 1.15em;
         display: block;
         max-height: 0px;
-		overflow: auto;
-		-webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
         box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
         opacity: 0;
-        transition: opacity .2s, max-height .2s, box-shadow .2s 0s;
+        transition: opacity .2s, max-height .2s, padding .2s, box-shadow .2s 0s;
     }
 
     &__option {
         padding: 0;
+        position: relative;
 
         &+.multiselect__option {
             margin-top: 1em;
@@ -190,9 +192,49 @@
         }
 
         ul.multiselect__options {
+            padding: 1.15em 1.15em;
             opacity: 1;
-			max-height: 150px;
+            max-height: 150px;
             box-shadow: 0px -35px 70px 25px rgba(0, 0, 0, 0.11);
+        }
+    }
+}
+
+// digit input
+.form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2em auto 0;
+    padding: 0 1em;
+    max-width: 30em;
+    width: 100%;
+}
+
+.input {
+    font-size: 1.8em;
+    width: 2em;
+    height: 1.5em;
+    line-height: 1em;
+    text-align: center;
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    transition: .2s;
+
+    &::placeholder {
+        line-height: normal;
+        color: #000;
+        opacity: 1;
+    }
+
+    &[disabled] {
+        pointer-events: none;
+        border-bottom: 1px solid #ccc;
+
+        &::placeholder {
+            color: #ccc;
         }
     }
 }
