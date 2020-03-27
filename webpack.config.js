@@ -188,10 +188,10 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: ['@babel/polyfill', './js/index.js'],
+        main: ['@babel/polyfill', './scripts/index.js'],
     },
     output: {
-        filename: `js/${filename('js')}`,
+        filename: `scripts/${filename('js')}`,
         path: path.resolve(__dirname, 'dist'),
     },
     optimization: optimization(),
@@ -215,7 +215,7 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                include: /js/,
+                include: /scripts/,
                 use: jsLoaders(),
             },
             {

@@ -1,4 +1,4 @@
-import {prependChild, rAF} from './customMethods';
+import {prependChild, rAF} from '../auxiliary/customMethods';
 
 const $nav = document.querySelector('nav.greedy');
 const $btn = $nav.querySelector('button');
@@ -39,7 +39,7 @@ export default class Nav {
     }
 
     static init() {
-        [...$vlinks.children].forEach(link => {
+        [...$vlinks.children].forEach((link) => {
             const style = getComputedStyle(link);
             state.totalSpace +=
                 link.offsetWidth +
@@ -53,7 +53,7 @@ export default class Nav {
 
         window.addEventListener('resize', rAF(Nav.check), false);
 
-        $btn.addEventListener('click', function() {
+        $btn.addEventListener('click', function () {
             $hlinks.classList.toggle('hidden');
         });
     }
