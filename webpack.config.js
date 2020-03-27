@@ -188,7 +188,11 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
     entry: {
-        main: ['@babel/polyfill', './scripts/index.js'],
+        main: [
+            '@babel/polyfill',
+            'element-closest-polyfill',
+            './scripts/index.js',
+        ],
     },
     output: {
         filename: `scripts/${filename('js')}`,
