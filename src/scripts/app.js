@@ -8,7 +8,7 @@ import Resize from './components/Resize';
 // import json from '../assets/json.json';
 
 // Inject symbol sprite
-// SymbolSprite.inject('./../images/symbol-sprite/symbol-sprite.html');
+// SymbolSprite.inject('./../images/symbol-sprite/symbol-sprite.html', 24);
 
 Inputmask({
     mask: '99/99/9999',
