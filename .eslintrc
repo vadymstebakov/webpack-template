@@ -19,13 +19,13 @@
 		"linebreak-style": ["warn", "unix"],
 		"quotes": ["warn", "single"],
 		"semi": ["warn", "always"],
-		"no-loop-func": ["error"],
-		"no-empty": ["error", {"allowEmptyCatch": true}],
+		"no-loop-func": ["warn"],
+		"no-empty": ["warn", {"allowEmptyCatch": true}],
 		"comma-style": ["warn", "last"],
 		"space-before-blocks": ["warn", "always"],
 		"no-mixed-spaces-and-tabs": ["warn"],
-		"no-unused-vars": ["error"],
-		"no-extra-semi": ["error"],
+		"no-unused-vars": ["warn"],
+		"no-extra-semi": ["warn"],
 		"no-console": ["warn"]
 	}
 }
