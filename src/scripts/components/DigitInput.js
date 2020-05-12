@@ -18,8 +18,7 @@ export default class DigitInput {
                 nextInput.value = validVal[1];
                 input.value = validVal[0];
                 nextInput.focus();
-                nextInput.selectionStart = nextInput.selectionEnd =
-                    nextInput.value.length;
+                nextInput.selectionStart = nextInput.selectionEnd = nextInput.value.length;
             }
         } else if (latch && input && validVal.length === 0) {
             let exist = prevInput ? true : false;
@@ -55,7 +54,7 @@ export default class DigitInput {
 
         form.addEventListener(
             'click',
-            function(e) {
+            function (e) {
                 const curInput = e.target.closest('.input');
 
                 if (!curInput) return;
@@ -66,7 +65,7 @@ export default class DigitInput {
             false
         );
 
-        form.addEventListener('input', function(e) {
+        form.addEventListener('input', function (e) {
             const curInput = e.target;
 
             DigitInput._enteringDigits(curInput);

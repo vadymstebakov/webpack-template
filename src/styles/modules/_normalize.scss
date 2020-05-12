@@ -243,6 +243,7 @@ select::-ms-expand {
     display: none;
 }
 
-@include input-placeholder {
+@include placeholder {
+    opacity: 1;
     line-height: normal;
 }

@@ -1,10 +1,12 @@
-// Transition
-@mixin transitionEase($time) {
-	transition: all $time ease;
+// Responsive font-size
+@mixin responsiveFz($maxSize, $minSize, $maxWidth: 1365, $minWidth: 320) {
+    $addSize: $maxSize - $minSize;
+    $maxWidth: $maxWidth - 320;
+    font-size: calc(#{$minSize + px} + #{$addSize} * ((100vw - #{$minWidth + px}) / #{$maxWidth}));
 }
 
 // Placeholder
-@mixin input-placeholder {
+@mixin placeholder {
 	&.placeholder {
 		@content;
 	}
