@@ -156,12 +156,20 @@ const plugins = () => {
             defer: ['main'],
         }),
         new CleanWebpackPlugin(),
-        new CopyWebpackPlugin([
-            {
-                from: path.resolve(__dirname, 'src/images/**/**.*'),
-                to: path.resolve(__dirname, 'dist'),
-            },
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'src/images/'),
+                    to: 'images/',
+                    force: true,
+                },
+                {
+                    from: path.resolve(__dirname, 'src/fonts/'),
+                    to: 'fonts/',
+                    force: true,
+                },
+            ],
+        }),
         new MiniCssExtractPlugin({
             filename: `styles/${filename('css')}`,
         }),
