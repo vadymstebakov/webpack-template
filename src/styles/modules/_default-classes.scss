@@ -1,3 +1,11 @@
+%fixedXY {
+    position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+    bottom: 0;
+}
+
 .wrap-helper {
 	height: 100%;
 	display: flex;
@@ -13,4 +21,13 @@
     padding: 0 15px;
     max-width: 1170px;
     margin: 0 auto;
+}
+
+.no-scroll {
+	overflow-y: scroll;
+	@extend %fixedXY;
+}
+
+.not-allowed {
+    pointer-events: none !important;
 }

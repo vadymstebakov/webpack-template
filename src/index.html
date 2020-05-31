@@ -15,6 +15,7 @@
         <div class="wrap-helper__inner">
             <%= require('html-loader!./partials/header.html') %>
             <h1>Webpack template</h1>
+            <a href="#" class="js-popup-btn" data-popup="popup-test">btn</a>
             <hr />
             <input id="mask" type="text">
 
@@ -89,6 +90,12 @@
             <!-- <img src="images/webpack-logo.png" alt=""> -->
         </div>
         <%= require('html-loader!./partials/footer.html') %>
+    </div>
+    <div id="popup-test" class="popup" style="display: none;">
+        <div class="popup__overlay"></div>
+        <div class="popup__wrap">
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia sunt minima id sequi repudiandae amet sint sapiente quod at molestias non, autem excepturi aliquam debitis modi sit quidem adipisci pariatur!</p>
+        </div>
     </div>
 </body>
 

@@ -4,6 +4,7 @@ import MultiSelect from './components/MultiSelect';
 import Inputmask from 'inputmask';
 import Nav from './components/Nav';
 import DigitInput from './components/DigitInput';
+import Popups from './components/Popups';
 import Resize from './components/Resize';
 // import json from '../assets/json.json';
 
@@ -38,6 +39,14 @@ DigitInput.init();
 
 // Navigation init
 Nav.init();
+
+{
+    const popups = document.querySelectorAll('.popup');
+
+    if (popups.length) {
+        Popups.init(popups);
+    }
+}
 
 // Resize function
 Resize.init();
