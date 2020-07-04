@@ -1,4 +1,4 @@
-import { hiddenScroll, visibleScroll, getScrollbarWidth } from '../auxiliary/customMethods';
+import { hiddenScroll, visibleScroll } from '../auxiliary/customMethods';
 
 export default class Popups {
     static init(popups) {
