@@ -1,3 +1,4 @@
+// import * as $ from 'jquery';
 import SymbolSprite from './components/SymbolSprite';
 import Popups from './components/Popups';
 import Resize from './components/Resize';

@@ -1,5 +1,5 @@
 {
-	"name": "webpack-tempalte",
+	"name": "webpack-template",
 	"version": "1.0.0",
 	"description": "",
 	"private": true,
@@ -52,6 +52,7 @@
 	"dependencies": {
 		"@babel/polyfill": "^7.10.4",
 		"element-closest-polyfill": "^1.0.0",
+		"jquery": "^3.5.1",
 		"normalize.css": "^8.0.1",
 		"swiper": "^6.0.0"
 	},
