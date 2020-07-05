@@ -1,5 +1,5 @@
 export default class SymbolSprite {
-    static inject(path, hours) {
+    static init(path, hours) {
         if (!document.createElementNS || !document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect) {
             return true;
         }

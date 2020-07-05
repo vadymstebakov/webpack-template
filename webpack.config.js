@@ -214,6 +214,8 @@ module.exports = {
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
+            '@scripts': path.resolve(__dirname, 'src/scripts'),
+            '@assets': path.resolve(__dirname, 'src/assets'),
         },
     },
     module: {

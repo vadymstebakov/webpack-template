@@ -68,10 +68,6 @@ export const hiddenScroll = () => {
 
     document.documentElement.classList.add('no-scroll');
     document.documentElement.style.top = `${-scrollTop}px`;
-
-    // if (document.body.scrollHeight > document.body.clientHeight) {
-    //     document.documentElement.style.paddingRight = `${getScrollbarWidth()}px`;
-    // }
 };
 
 export const visibleScroll = () => {
@@ -79,7 +75,6 @@ export const visibleScroll = () => {
 
     document.documentElement.classList.remove('no-scroll');
     document.documentElement.style.removeProperty('top');
-    // document.documentElement.style.removeProperty('padding-right');
     document.documentElement.scrollTop = -scrollTop;
     document.body.scrollTop = -scrollTop;
 };

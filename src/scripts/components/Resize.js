@@ -1,4 +1,4 @@
-import { debounce } from '../auxiliary/customMethods';
+import { debounce } from '@scripts/helpers/customMethods';
 
 export default class Resize {
     static _resized() {
