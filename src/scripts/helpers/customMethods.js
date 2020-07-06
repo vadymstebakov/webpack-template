@@ -4,12 +4,13 @@ export const asyncForEach = (arr, cb, delay = 0) => {
     });
 };
 
-export const debounce = (cb, interval) => {
+export const debounce = (cb, interval = 0) => {
     let debounceTimeoutId;
 
     return function (...args) {
         clearTimeout(debounceTimeoutId);
-        debounceTimeoutId = setTimeout(() => cb.apply(this, args), interval);
+        debounceTimeoutId = null;
+        debounceTimeoutId = setTimeout(() => cb.apply(null, [...args]), interval);
     };
 };
 
@@ -33,6 +34,7 @@ export const rAF = cb => {
     return function (...args) {
         if (!ticking) {
             cancelAnimationFrame(globalID);
+            globalID = null;
             globalID = requestAnimationFrame(() => {
                 ticking = false;
                 return cb(...args);
@@ -43,26 +45,6 @@ export const rAF = cb => {
 };
 
 export const prependChild = (parent, child) => parent.insertBefore(child, parent.firstElementChild);
-
-export const hiddenScroll = () => {
-    if (document.body.scrollHeight > document.body.clientHeight) {
-        let scrollTop = document.documentElement.scrollTop
-            ? document.documentElement.scrollTop
-            : document.body.scrollTop;
-
-        document.documentElement.classList.add('no-scroll');
-        document.documentElement.style.top = `${-scrollTop}px`;
-    }
-};
-
-export const visibleScroll = () => {
-    let scrollTop = parseInt(document.documentElement.style.top);
-
-    document.documentElement.classList.remove('no-scroll');
-    document.documentElement.style.removeProperty('top');
-    document.documentElement.scrollTop = -scrollTop;
-    document.body.scrollTop = -scrollTop;
-};
 
 export const getScrollbarWidth = () => {
     const outer = document.createElement('div');
@@ -79,4 +61,20 @@ export const getScrollbarWidth = () => {
     outer.parentNode.removeChild(outer);
 
     return scrollbarWidth;
+};
+
+export const hiddenScroll = () => {
+    const scrollTop = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop;
+
+    document.documentElement.classList.add('no-scroll');
+    document.documentElement.style.top = `${-scrollTop}px`;
+};
+
+export const visibleScroll = () => {
+    const scrollTop = parseInt(document.documentElement.style.top);
+
+    document.documentElement.classList.remove('no-scroll');
+    document.documentElement.style.removeProperty('top');
+    document.documentElement.scrollTop = -scrollTop;
+    document.body.scrollTop = -scrollTop;
 };
