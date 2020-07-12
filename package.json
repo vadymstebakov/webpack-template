@@ -19,7 +19,7 @@
 	"devDependencies": {
 		"@babel/core": "^7.10.4",
 		"@babel/preset-env": "^7.10.4",
-		"autoprefixer": "^9.8.4",
+		"autoprefixer": "^9.8.5",
 		"babel-eslint": "^10.1.0",
 		"babel-loader": "^8.1.0",
 		"clean-webpack-plugin": "^3.0.0",
@@ -40,7 +40,7 @@
 		"optimize-css-assets-webpack-plugin": "^5.0.3",
 		"postcss-loader": "^3.0.0",
 		"prettier": "2.0.5",
-		"sass-loader": "^9.0.1",
+		"sass-loader": "^9.0.2",
 		"script-ext-html-webpack-plugin": "^2.1.4",
 		"style-loader": "^1.2.1",
 		"terser-webpack-plugin": "^3.0.6",
@@ -54,7 +54,7 @@
 		"element-closest-polyfill": "^1.0.0",
 		"jquery": "^3.5.1",
 		"normalize.css": "^8.0.1",
-		"swiper": "^6.0.0"
+		"swiper": "^6.0.2"
 	},
 	"browserslist": "> 0.2%, not dead"
 }
