@@ -36,7 +36,7 @@ const multiplesHTMLPages = () => {
     const HTMLPages = [];
     const files = glob.sync(path.resolve(__dirname, 'src/*.html'), {});
 
-    const sortFiles = files.filter(file => /[^index]\.html$/.test(file));
+    const sortFiles = files.filter(file => /^((?!index.html).)*$/.test(file));
 
     const fileNames = sortFiles.map(sortFile => {
         const splitFile = sortFile.split('/');
