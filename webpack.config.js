@@ -1,6 +1,7 @@
 const path = require('path');
 const glob = require('glob');
 const ip = require('ip');
+const chalk = require('chalk');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHTMLPlugin = require('script-ext-html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -12,6 +13,8 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const autoprefixer = require('autoprefixer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
+// eslint-disable-next-line no-console
+const log = console.log;
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
@@ -46,7 +49,7 @@ const multiplesHTMLPages = () => {
     HTMLPages.push(...fileNames);
 
     //NOTE: How many pages you will get
-    console.log(`Pages: ${HTMLPages.join(', ')}`);
+    log(chalk.black.bgWhite.bold(`### Get pages: ${chalk.red.bgWhite.bold(HTMLPages.join(', '))}`));
 
     return HTMLPages.map(
         HTMLPage =>
