@@ -15,7 +15,7 @@
         <div class="wrap-helper__inner">
             <%= require('html-loader!./partials/header.html') %>
             <h1>Webpack template</h1>
-            <a href="#" class="js-popup-btn" data-popup="popup-test">btn</a>
+            <a href="#" data-popup-open data-popup="popup-test">btn</a>
             <hr />
             <svg>
                 <use xlink:href="#icon-home"></use>
@@ -25,8 +25,9 @@
         <%= require('html-loader!./partials/footer.html') %>
     </div>
     <div id="popup-test" class="popup" style="display: none;">
-        <div class="popup__overlay"></div>
+        <div class="popup__overlay" data-popup-close></div>
         <div class="popup__wrap">
+            <a href="#" data-popup-close>x</a>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia sunt minima id sequi repudiandae amet sint sapiente quod at molestias non, autem excepturi aliquam debitis modi sit quidem adipisci pariatur!</p>
         </div>
     </div>
