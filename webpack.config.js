@@ -10,7 +10,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const autoprefixer = require('autoprefixer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 // eslint-disable-next-line no-console
@@ -96,7 +95,9 @@ const styleLoaders = () => {
         {
             loader: 'postcss-loader',
             options: {
-                plugins: [autoprefixer()],
+                postcssOptions: {
+                    plugins: ['autoprefixer'],
+                },
                 sourceMap: isDev,
             },
         },
