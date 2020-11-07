@@ -2,6 +2,7 @@ const path = require('path');
 const glob = require('glob');
 const ip = require('ip');
 const chalk = require('chalk');
+const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHTMLPlugin = require('script-ext-html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -81,8 +82,6 @@ const styleLoaders = () => {
         {
             loader: MiniCssExtractPlugin.loader,
             options: {
-                hmr: isDev,
-                reloadAll: true,
                 publicPath: '../',
             },
         },
@@ -187,6 +186,7 @@ const plugins = () => {
             ],
         }),
         putSVGSprite(),
+        new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
             filename: `styles/${filename('css')}`,
         }),
@@ -214,19 +214,24 @@ module.exports = {
     output: {
         filename: `scripts/${filename('js')}`,
         path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
     optimization: optimization(),
     devServer: {
+        contentBase: path.resolve(__dirname, 'dist'),
+        watchContentBase: true,
         compress: true,
         host: ip.address(),
         port: 3000,
+        open: true,
         // hot: isDev,
+        // publicPath: '/dist/',
         clientLogLevel: 'warn' || 'error' || 'warning',
         overlay: {
             errors: true,
         },
     },
-    devtool: isDev ? 'source-map' : '',
+    devtool: isDev ? 'source-map' : false,
     plugins: plugins(),
     resolve: {
         alias: {
