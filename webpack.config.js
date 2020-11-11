@@ -219,13 +219,11 @@ module.exports = {
     optimization: optimization(),
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
-        watchContentBase: true,
         compress: true,
         host: ip.address(),
         port: 3000,
         open: true,
-        // hot: isDev,
-        // publicPath: '/dist/',
+        hot: isDev,
         clientLogLevel: 'warn' || 'error' || 'warning',
         overlay: {
             errors: true,
