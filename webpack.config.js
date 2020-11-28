@@ -9,7 +9,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 // eslint-disable-next-line no-console
@@ -18,6 +18,9 @@ const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
+// Filename
+const filename = (ext, name = '[name]') => (isDev ? `${name}.${ext}` : `${name}.[hash].min.${ext}`);
+
 // Optimization
 const optimization = () => {
     const config = {
@@ -25,7 +28,7 @@ const optimization = () => {
             chunks: 'all',
             cacheGroups: {
                 defaultVendors: {
-                    filename: isDev ? 'scripts/vendors.js' : 'scripts/vendors.[hash].min.js',
+                    filename: `scripts/${filename('js', 'vendors')}`,
                 },
             },
         },
@@ -156,9 +159,6 @@ const jsLoaders = () => {
     return loaders;
 };
 
-// Filename
-const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
-
 // Plugins
 const plugins = () => {
     const base = [
@@ -203,7 +203,7 @@ const plugins = () => {
         }),
     ];
 
-    if (isProd) base.push(new BundleAnalyzerPlugin());
+    // if (isProd) base.push(new BundleAnalyzerPlugin());
 
     return base;
 };
