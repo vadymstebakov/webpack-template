@@ -4,7 +4,6 @@ const ip = require('ip');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHTMLPlugin = require('script-ext-html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -24,6 +23,11 @@ const optimization = () => {
     const config = {
         splitChunks: {
             chunks: 'all',
+            cacheGroups: {
+                defaultVendors: {
+                    filename: isDev ? 'scripts/vendors.js' : 'scripts/vendors.[hash].min.js',
+                },
+            },
         },
     };
 
@@ -56,7 +60,6 @@ const multiplesHTMLPages = () => {
             new HTMLWebpackPlugin({
                 filename: `${HTMLPage}.html`,
                 template: `./${HTMLPage}.html`,
-                inject: 'head',
                 minify: {
                     collapseWhitespace: isProd,
                 },
@@ -161,16 +164,16 @@ const plugins = () => {
     const base = [
         new HTMLWebpackPlugin({
             template: './index.html',
-            inject: 'head',
             minify: {
                 collapseWhitespace: isProd,
             },
         }),
         ...multiplesHTMLPages(),
-        new ScriptExtHTMLPlugin({
-            defer: ['main'],
-        }),
         new CleanWebpackPlugin(),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+        }),
         new CopyWebpackPlugin({
             patterns: [
                 {
@@ -186,8 +189,9 @@ const plugins = () => {
             ],
         }),
         putSVGSprite(),
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
+            // filename: isDev ? 'styles/style.css' : 'styles/style.[hash].min.css',
             filename: `styles/${filename('css')}`,
         }),
         new ImageminPlugin({
@@ -221,14 +225,14 @@ module.exports = {
         contentBase: path.resolve(__dirname, 'dist'),
         compress: true,
         host: ip.address(),
-        port: 3000,
         open: true,
-        hot: isDev,
+        // hot: isDev,
         clientLogLevel: 'warn' || 'error' || 'warning',
         overlay: {
             errors: true,
         },
     },
+    target: isDev ? 'web' : 'browserslist',
     devtool: isDev ? 'source-map' : false,
     plugins: plugins(),
     resolve: {
