@@ -4,13 +4,12 @@ const ip = require('ip');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const ScriptExtHTMLPlugin = require('script-ext-html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 // eslint-disable-next-line no-console
@@ -19,11 +18,19 @@ const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
+// Filename
+const filename = (ext, name = '[name]') => (isDev ? `${name}.${ext}` : `${name}.[hash].min.${ext}`);
+
 // Optimization
 const optimization = () => {
     const config = {
         splitChunks: {
             chunks: 'all',
+            cacheGroups: {
+                defaultVendors: {
+                    filename: `scripts/${filename('js', 'vendors')}`,
+                },
+            },
         },
     };
 
@@ -56,7 +63,6 @@ const multiplesHTMLPages = () => {
             new HTMLWebpackPlugin({
                 filename: `${HTMLPage}.html`,
                 template: `./${HTMLPage}.html`,
-                inject: 'head',
                 minify: {
                     collapseWhitespace: isProd,
                 },
@@ -153,24 +159,21 @@ const jsLoaders = () => {
     return loaders;
 };
 
-// Filename
-const filename = ext => (isDev ? `[name].${ext}` : `[name].[hash].min.${ext}`);
-
 // Plugins
 const plugins = () => {
     const base = [
         new HTMLWebpackPlugin({
             template: './index.html',
-            inject: 'head',
             minify: {
                 collapseWhitespace: isProd,
             },
         }),
         ...multiplesHTMLPages(),
-        new ScriptExtHTMLPlugin({
-            defer: ['main'],
-        }),
         new CleanWebpackPlugin(),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+        }),
         new CopyWebpackPlugin({
             patterns: [
                 {
@@ -186,8 +189,9 @@ const plugins = () => {
             ],
         }),
         putSVGSprite(),
-        new webpack.HotModuleReplacementPlugin(),
+        // new webpack.HotModuleReplacementPlugin(),
         new MiniCssExtractPlugin({
+            // filename: isDev ? 'styles/style.css' : 'styles/style.[hash].min.css',
             filename: `styles/${filename('css')}`,
         }),
         new ImageminPlugin({
@@ -199,7 +203,7 @@ const plugins = () => {
         }),
     ];
 
-    if (isProd) base.push(new BundleAnalyzerPlugin());
+    // if (isProd) base.push(new BundleAnalyzerPlugin());
 
     return base;
 };
@@ -221,14 +225,14 @@ module.exports = {
         contentBase: path.resolve(__dirname, 'dist'),
         compress: true,
         host: ip.address(),
-        port: 3000,
         open: true,
-        hot: isDev,
+        // hot: isDev,
         clientLogLevel: 'warn' || 'error' || 'warning',
         overlay: {
             errors: true,
         },
     },
+    target: isDev ? 'web' : 'browserslist',
     devtool: isDev ? 'source-map' : false,
     plugins: plugins(),
     resolve: {
