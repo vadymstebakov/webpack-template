@@ -1,13 +1,14 @@
 const path = require('path');
+const environment = require('./configuration/environment');
 const glob = require('glob');
-const ip = require('ip');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+// const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
@@ -35,7 +36,13 @@ const optimization = () => {
     };
 
     if (isProd) {
-        config.minimizer = [new OptimizeCssAssetWebpackPlugin(), new TerserWebpackPlugin()];
+        config.minimize = true;
+        config.minimizer = [
+            new TerserWebpackPlugin({
+                parallel: true,
+            }),
+            new CssMinimizerPlugin(),
+        ];
     }
 
     return config;
@@ -169,7 +176,9 @@ const plugins = () => {
             },
         }),
         ...multiplesHTMLPages(),
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin({
+            verbose: true,
+        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -210,40 +219,17 @@ const plugins = () => {
 
 // Webpack's module
 module.exports = {
-    context: path.resolve(__dirname, 'src'),
-    mode: 'development',
+    context: environment.source,
     entry: {
-        main: ['@babel/polyfill', 'element-closest-polyfill', './scripts/index.js'],
+        // app: path.resolve('./src', 'scripts', 'index.js'),
+        app: ['@babel/polyfill', 'element-closest-polyfill', path.resolve('./src', 'scripts', 'index.js')],
     },
     output: {
         filename: `scripts/${filename('js')}`,
-        path: path.resolve(__dirname, 'dist'),
+        path: environment.output,
         publicPath: '/',
     },
     optimization: optimization(),
-    devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        compress: true,
-        host: ip.address(),
-        open: true,
-        // hot: isDev,
-        clientLogLevel: 'warn' || 'error' || 'warning',
-        overlay: {
-            errors: true,
-        },
-    },
-    target: isDev ? 'web' : 'browserslist',
-    devtool: isDev ? 'source-map' : false,
-    plugins: plugins(),
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-            '@scripts': path.resolve(__dirname, 'src/scripts'),
-            '@helpers': path.resolve(__dirname, 'src/scripts/helpers'),
-            '@components': path.resolve(__dirname, 'src/scripts/components'),
-            '@assets': path.resolve(__dirname, 'src/assets'),
-        },
-    },
     module: {
         rules: [
             {
@@ -268,4 +254,15 @@ module.exports = {
             },
         ],
     },
+    plugins: plugins(),
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+            '@scripts': path.resolve(__dirname, 'src/scripts'),
+            '@helpers': path.resolve(__dirname, 'src/scripts/helpers'),
+            '@components': path.resolve(__dirname, 'src/scripts/components'),
+            '@assets': path.resolve(__dirname, 'src/assets'),
+        },
+    },
+    target: isDev ? 'web' : 'browserslist',
 };

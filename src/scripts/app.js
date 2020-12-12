@@ -6,7 +6,7 @@ import Resize from '@helpers/Resize';
 // import json from '@assets/json.json';
 
 // console.log(json);
-
+console.log($('div'));
 const emitter = new EventEmitter();
 
 // Init symbol sprite
