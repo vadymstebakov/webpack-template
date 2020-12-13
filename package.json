@@ -4,25 +4,30 @@
     "description": "",
     "private": true,
     "scripts": {
-        "build": "cross-env NODE_ENV=production webpack --mode=production",
-        "dev": "cross-env NODE_ENV=development webpack --mode=development",
-        "start": "cross-env NODE_ENV=development webpack serve --config webpack.config.js --mode=development",
-        "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
+        "dev": "cross-env NODE_ENV=development webpack --config configuration/webpack.dev.config.js --mode=development",
+        "start": "cross-env NODE_ENV=development webpack serve --config configuration/webpack.dev.config.js --mode=development",
+        "build": "cross-env NODE_ENV=production webpack --config configuration/webpack.prod.config.js --mode=production",
+        "stats": "cross-env NODE_ENV=stats webpack --config configuration/webpack.prod.config.js --json > stats.json && webpack-bundle-analyzer stats.json",
         "lint:js": "eslint --ext .js src/scripts/"
     },
     "engines": {
-        "node": "^10 || ^12 || >=14"
+        "node": "^12 || >=14"
     },
     "keywords": [
-        "js",
-        "javascript",
-        "webpack"
+        "JavaScript",
+        "Node",
+        "Webpack"
     ],
     "author": "Vadym Stebakov <vadim.stebakov.94@gmail.com>",
     "license": "ISC",
     "devDependencies": {
+        "@babel/cli": "^7.12.10",
         "@babel/core": "^7.12.10",
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/plugin-proposal-decorators": "^7.12.1",
+        "@babel/plugin-transform-runtime": "^7.12.10",
         "@babel/preset-env": "^7.12.10",
+        "@babel/runtime": "^7.12.5",
         "autoprefixer": "^10.1.0",
         "babel-eslint": "^10.1.0",
         "babel-loader": "^8.2.2",
@@ -53,14 +58,16 @@
         "webpack": "^5.10.1",
         "webpack-bundle-analyzer": "^4.2.0",
         "webpack-cli": "^4.2.0",
-        "webpack-dev-server": "^3.11.0"
+        "webpack-dev-server": "^3.11.0",
+        "webpack-merge": "^5.7.0"
     },
     "dependencies": {
         "@babel/polyfill": "^7.12.1",
+        "core-js": "^3.8.1",
         "element-closest-polyfill": "^1.0.2",
         "jquery": "^3.5.1",
         "normalize.css": "^8.0.1",
         "swiper": "^6.4.1"
     },
-    "browserslist": "> 0.2%, not dead"
+    "browserslist": "> 0.25%, not dead"
 }

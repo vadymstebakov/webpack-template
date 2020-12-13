@@ -13,7 +13,7 @@
 <body>
     <div class="wrap-helper">
         <div class="wrap-helper__inner">
-            <%= require('html-loader!./partials/header.html') %>
+            <%= require('html-loader!./includes/header.html') %>
             <h1>Webpack template</h1>
             <a href="#" data-popup-open data-popup="popup-test">btn</a>
             <hr />
@@ -22,7 +22,7 @@
             </svg>
             <img src="images/webpack-logo.png" alt="">
         </div>
-        <%= require('html-loader!./partials/footer.html') %>
+        <%= require('html-loader!./includes/footer.html') %>
     </div>
     <div id="popup-test" class="popup" style="display: none;">
         <div class="popup__overlay" data-popup-close></div>

@@ -8,6 +8,10 @@ module.exports = {
 
         /* Path to built files directory */
         output: path.resolve(__dirname, '../dist/'),
+
+        /* Assets */
+        images: path.resolve(__dirname, '../src/images/'),
+        fonts: path.resolve(__dirname, '../src/fonts/'),
     },
     server: {
         host: ip.address(),

@@ -4,11 +4,7 @@ const environment = require('./environment');
 
 module.exports = merge(webpackConfiguration, {
     mode: 'development',
-
-    /* Manage source maps generation process */
-    devtool: 'eval-source-map',
-
-    /* Development Server Configuration */
+    devtool: 'source-map',
     devServer: {
         contentBase: environment.paths.output,
         watchContentBase: true,
@@ -26,14 +22,10 @@ module.exports = merge(webpackConfiguration, {
         },
         ...environment.server,
     },
-
-    /* File watcher options */
     watchOptions: {
         aggregateTimeout: 300,
         poll: 300,
         ignored: /node_modules/,
     },
-
-    /* Additional plugins configuration */
     plugins: [],
 });
