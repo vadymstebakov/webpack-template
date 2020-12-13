@@ -160,8 +160,8 @@ const jsLoaders = () => {
 const plugins = () => {
     const base = [
         new MiniCssExtractPlugin({
-            // filename: isDev ? 'styles/style.css' : 'styles/style.[hash].min.css',
-            filename: `styles/${filename('css')}`,
+            filename: `styles/${filename('css', 'app')}`,
+            chunkFilename: `styles/${filename('css', 'vendors')}`,
         }),
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
@@ -210,7 +210,6 @@ const plugins = () => {
 module.exports = {
     context: environment.paths.source,
     entry: {
-        // app: path.resolve('./src', 'scripts', 'index.js'),
         app: [
             '@babel/polyfill',
             'element-closest-polyfill',
