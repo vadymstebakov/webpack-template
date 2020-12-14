@@ -1,21 +1,23 @@
 const path = require('path');
-const glob = require('glob');
-const ip = require('ip');
+const environment = require('./configuration/environment');
+const fs = require('fs');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+// const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 // eslint-disable-next-line no-console
 const log = console.log;
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = !isDev;
+const isStats = process.env.NODE_ENV === 'stats';
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
 // Filename
@@ -34,37 +36,40 @@ const optimization = () => {
         },
     };
 
-    if (isProd) {
-        config.minimizer = [new OptimizeCssAssetWebpackPlugin(), new TerserWebpackPlugin()];
+    if (isProd || isStats) {
+        config.minimize = true;
+        config.minimizer = [
+            new TerserWebpackPlugin({
+                parallel: true,
+            }),
+            new CssMinimizerPlugin(),
+        ];
     }
 
     return config;
 };
 
-// Pages
-const multiplesHTMLPages = () => {
-    const HTMLPages = [];
-    const files = glob.sync(path.resolve(__dirname, 'src/*.html'), {});
+// Templates
+const templatesHTML = () => {
+    const pages = [];
+    const templates = fs
+        .readdirSync(path.resolve(__dirname, environment.paths.source, 'templates'))
+        .filter(file => /\.html$/.test(file));
 
-    const sortFiles = files.filter(file => /^((?!index.html).)*$/.test(file));
+    pages.push(...templates);
 
-    const fileNames = sortFiles.map(sortFile => {
-        const splitFile = sortFile.split('/');
-        return splitFile[splitFile.length - 1].replace(/\.html/i, '');
-    });
+    /*
+        NOTE: How many pages you will get
+    */
+    log(chalk.black.bgWhite.bold(`### Get pages: ${chalk.red.bgWhite.bold(pages.join(', '))}`));
 
-    HTMLPages.push(...fileNames);
-
-    //NOTE: How many pages you will get
-    log(chalk.black.bgWhite.bold(`### Get pages: ${chalk.red.bgWhite.bold(HTMLPages.join(', '))}`));
-
-    return HTMLPages.map(
-        HTMLPage =>
+    return pages.map(
+        page =>
             new HTMLWebpackPlugin({
-                filename: `${HTMLPage}.html`,
-                template: `./${HTMLPage}.html`,
+                filename: page,
+                template: path.resolve(environment.paths.source, 'templates', page),
                 minify: {
-                    collapseWhitespace: isProd,
+                    collapseWhitespace: isProd || isStats,
                 },
             })
     );
@@ -77,7 +82,7 @@ const putSVGSprite = () => {
         template: './images/symbol-sprite/symbol-sprite.html',
         inject: false,
         minify: {
-            collapseWhitespace: isProd,
+            collapseWhitespace: isProd || isStats,
         },
     });
 };
@@ -132,23 +137,15 @@ const fileLoaders = () => {
     return loaders;
 };
 
-// Babel options
-const babelOptions = preset => {
-    const opts = {
-        presets: ['@babel/preset-env'],
-    };
-
-    if (preset) opts.presets.push(preset);
-
-    return opts;
-};
-
 // Js loaders
 const jsLoaders = () => {
     const loaders = [
         {
             loader: 'babel-loader',
-            options: babelOptions(),
+            options: {
+                babelrc: false,
+                configFile: path.resolve(__dirname, 'babel.config.json'),
+            },
         },
     ];
 
@@ -162,13 +159,10 @@ const jsLoaders = () => {
 // Plugins
 const plugins = () => {
     const base = [
-        new HTMLWebpackPlugin({
-            template: './index.html',
-            minify: {
-                collapseWhitespace: isProd,
-            },
+        new MiniCssExtractPlugin({
+            filename: `styles/${filename('css', 'app')}`,
+            chunkFilename: `styles/${filename('css', 'vendors')}`,
         }),
-        ...multiplesHTMLPages(),
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
             $: 'jquery',
@@ -177,73 +171,57 @@ const plugins = () => {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: path.resolve(__dirname, 'src/images/'),
+                    from: environment.paths.images,
                     to: 'images/',
                     force: true,
+                    toType: 'dir',
+                    globOptions: {
+                        ignore: ['*.DS_Store', 'Thumbs.db'],
+                    },
                 },
                 {
-                    from: path.resolve(__dirname, 'src/fonts/'),
+                    from: environment.paths.fonts,
                     to: 'fonts/',
                     force: true,
+                    toType: 'dir',
+                    globOptions: {
+                        ignore: ['*.DS_Store', 'Thumbs.db'],
+                    },
                 },
             ],
-        }),
-        putSVGSprite(),
-        // new webpack.HotModuleReplacementPlugin(),
-        new MiniCssExtractPlugin({
-            // filename: isDev ? 'styles/style.css' : 'styles/style.[hash].min.css',
-            filename: `styles/${filename('css')}`,
         }),
         new ImageminPlugin({
             disable: isDev,
             test: regexImages,
             pngquant: {
-                quality: '95-100',
+                quality: '90-100',
             },
         }),
+        putSVGSprite(),
+        ...templatesHTML(),
     ];
 
-    // if (isProd) base.push(new BundleAnalyzerPlugin());
+    if (isStats) base.push(new BundleAnalyzerPlugin());
 
     return base;
 };
 
-// Webpack's module
+// Modules of webpack
 module.exports = {
-    context: path.resolve(__dirname, 'src'),
-    mode: 'development',
+    context: environment.paths.source,
     entry: {
-        main: ['@babel/polyfill', 'element-closest-polyfill', './scripts/index.js'],
+        app: [
+            '@babel/polyfill',
+            'element-closest-polyfill',
+            path.resolve(environment.paths.source, 'scripts', 'index.js'),
+        ],
     },
     output: {
         filename: `scripts/${filename('js')}`,
-        path: path.resolve(__dirname, 'dist'),
-        publicPath: '/',
+        path: environment.paths.output,
+        publicPath: '',
     },
     optimization: optimization(),
-    devServer: {
-        contentBase: path.resolve(__dirname, 'dist'),
-        compress: true,
-        host: ip.address(),
-        open: true,
-        // hot: isDev,
-        clientLogLevel: 'warn' || 'error' || 'warning',
-        overlay: {
-            errors: true,
-        },
-    },
-    target: isDev ? 'web' : 'browserslist',
-    devtool: isDev ? 'source-map' : false,
-    plugins: plugins(),
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-            '@scripts': path.resolve(__dirname, 'src/scripts'),
-            '@helpers': path.resolve(__dirname, 'src/scripts/helpers'),
-            '@components': path.resolve(__dirname, 'src/scripts/components'),
-            '@assets': path.resolve(__dirname, 'src/assets'),
-        },
-    },
     module: {
         rules: [
             {
@@ -268,4 +246,15 @@ module.exports = {
             },
         ],
     },
+    plugins: plugins(),
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+            '@scripts': path.resolve(__dirname, 'src/scripts'),
+            '@helpers': path.resolve(__dirname, 'src/scripts/helpers'),
+            '@components': path.resolve(__dirname, 'src/scripts/components'),
+            '@assets': path.resolve(__dirname, 'src/assets'),
+        },
+    },
+    target: 'web',
 };
