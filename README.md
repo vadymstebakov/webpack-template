@@ -13,3 +13,4 @@
 * `npm start` or `yarn start` runs your project in the development mode on the local server;
 * `npm run build` or `yarn run build` builds your project for production;
 * `npm run stats` or `yarn run stats` analyses your project;
+* `npm run lint:js` or `yarn run lint:js` checks your JavaScript for errors and warnings;

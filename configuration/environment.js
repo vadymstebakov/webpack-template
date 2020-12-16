@@ -1,5 +1,8 @@
 const path = require('path');
 const ip = require('ip');
+const portFinderSync = require('portfinder-sync');
+
+const port = portFinderSync.getPort(8000);
 
 module.exports = {
     paths: {
@@ -10,7 +13,7 @@ module.exports = {
     },
     server: {
         host: ip.address(),
-        port: 8000,
+        port,
     },
     limits: {
         images: 8192,
