@@ -12,8 +12,8 @@
 }
 
 .no-scroll {
-    overflow-y: scroll;
     @extend %fixedXY;
+    overflow-y: scroll;
 }
 
 .not-allowed {

@@ -7,7 +7,6 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const OptimizeCssAssetWebpackPlugin = require('optimize-css-assets-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -21,7 +20,7 @@ const isStats = process.env.NODE_ENV === 'stats';
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
 // Filename
-const filename = (ext, name = '[name]') => (isDev ? `${name}.${ext}` : `${name}.[hash].min.${ext}`);
+const filename = (ext, name = '[name]') => (isDev ? `${name}.${ext}` : `${name}.[contenthash:5].min.${ext}`);
 
 // Optimization
 const optimization = () => {
@@ -30,7 +29,15 @@ const optimization = () => {
             chunks: 'all',
             cacheGroups: {
                 defaultVendors: {
-                    filename: `scripts/${filename('js', 'vendors')}`,
+                    test: /[\\/]node_modules[\\/]/,
+                    priority: -10,
+                    name: 'vendors',
+                    reuseExistingChunk: true,
+                },
+                default: {
+                    minChunks: 2,
+                    priority: -20,
+                    reuseExistingChunk: true,
                 },
             },
         },
@@ -42,7 +49,17 @@ const optimization = () => {
             new TerserWebpackPlugin({
                 parallel: true,
             }),
-            new CssMinimizerPlugin(),
+            new CssMinimizerPlugin({
+                parallel: true,
+                minimizerOptions: {
+                    preset: [
+                        'default',
+                        {
+                            discardComments: { removeAll: true },
+                        },
+                    ],
+                },
+            }),
         ];
     }
 
@@ -160,8 +177,7 @@ const jsLoaders = () => {
 const plugins = () => {
     const base = [
         new MiniCssExtractPlugin({
-            filename: `styles/${filename('css', 'app')}`,
-            chunkFilename: `styles/${filename('css', 'vendors')}`,
+            filename: `styles/${filename('css')}`,
         }),
         new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
