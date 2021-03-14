@@ -20,7 +20,7 @@ const isStats = process.env.NODE_ENV === 'stats';
 const regexImages = /\.(png|jpe?g|svg|gif)$/i;
 
 // Filename
-const filename = (ext, name = '[name]') => (isDev ? `${name}.${ext}` : `${name}.[contenthash:5].min.${ext}`);
+const filename = (ext, name = '[name]') => (isDev ? `${name}.${ext}` : `${name}.[contenthash:10].min.${ext}`);
 
 // Optimization
 const optimization = () => {
@@ -85,9 +85,7 @@ const templatesHTML = () => {
             new HTMLWebpackPlugin({
                 filename: page,
                 template: path.resolve(environment.paths.source, 'templates', page),
-                minify: {
-                    collapseWhitespace: isProd || isStats,
-                },
+                minify: isProd || isStats,
             })
     );
 };
@@ -96,11 +94,9 @@ const templatesHTML = () => {
 const putSVGSprite = () => {
     return new HTMLWebpackPlugin({
         filename: 'images/symbol-sprite/symbol-sprite.html',
-        template: './images/symbol-sprite/symbol-sprite.html',
+        template: path.resolve(environment.paths.images, 'symbol-sprite', 'symbol-sprite.html'),
         inject: false,
-        minify: {
-            collapseWhitespace: isProd || isStats,
-        },
+        minify: isProd || isStats,
     });
 };
 
@@ -176,10 +172,10 @@ const jsLoaders = () => {
 // Plugins
 const plugins = () => {
     const base = [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: `styles/${filename('css')}`,
         }),
-        new CleanWebpackPlugin(),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -192,7 +188,7 @@ const plugins = () => {
                     force: true,
                     toType: 'dir',
                     globOptions: {
-                        ignore: ['*.DS_Store', 'Thumbs.db'],
+                        ignore: ['**/*.DS_Store', '**/Thumbs.db', '**/symbol-sprite/**'],
                     },
                 },
                 {
@@ -201,7 +197,7 @@ const plugins = () => {
                     force: true,
                     toType: 'dir',
                     globOptions: {
-                        ignore: ['*.DS_Store', 'Thumbs.db'],
+                        ignore: ['**/*.DS_Store', '**/Thumbs.db'],
                     },
                 },
             ],
@@ -210,7 +206,7 @@ const plugins = () => {
             disable: isDev,
             test: regexImages,
             pngquant: {
-                quality: '90-100',
+                quality: '60-100',
             },
         }),
         putSVGSprite(),
@@ -266,7 +262,6 @@ module.exports = {
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'src'),
-            '@scripts': path.resolve(__dirname, 'src/scripts'),
             '@helpers': path.resolve(__dirname, 'src/scripts/helpers'),
             '@components': path.resolve(__dirname, 'src/scripts/components'),
             '@assets': path.resolve(__dirname, 'src/assets'),

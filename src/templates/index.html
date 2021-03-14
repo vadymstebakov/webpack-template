@@ -1,36 +1,41 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>Webpack template</title>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+        />
+        <meta name="format-detection" content="telephone=no" />
+        <link rel="icon" href="images/favicon/favicon.ico" />
+    </head>
 
-<head>
-    <title>Webpack template</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <meta name="format-detection" content="telephone=no">
-    <link rel="icon" href="images/favicon/favicon.ico">
-</head>
-
-<body>
-    <div class="wrap-helper">
-        <div class="wrap-helper__inner">
-            <%= require('html-loader!./includes/header.html') %>
-            <h1>Webpack template</h1>
-            <a href="#" data-popup-open data-popup="popup-test">btn</a>
-            <hr />
-            <svg>
-                <use xlink:href="#icon-home"></use>
-            </svg>
-            <img src="images/webpack-logo.png" alt="">
+    <body>
+        <div class="wrap-helper">
+            <div class="wrap-helper__inner">
+                <%= require('html-loader!./includes/header.html') %>
+                <h1>Webpack template</h1>
+                <a href="#" data-popup-open data-popup="popup-test">btn</a>
+                <hr />
+                <svg>
+                    <use xlink:href="#icon-home"></use>
+                </svg>
+                <img src="images/webpack-logo.png" alt="" />
+            </div>
+            <%= require('html-loader!./includes/footer.html') %>
         </div>
-        <%= require('html-loader!./includes/footer.html') %>
-    </div>
-    <div id="popup-test" class="popup" style="display: none;">
-        <div class="popup__overlay" data-popup-close></div>
-        <div class="popup__wrap">
-            <a href="#" data-popup-close>x</a>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia sunt minima id sequi repudiandae amet sint sapiente quod at molestias non, autem excepturi aliquam debitis modi sit quidem adipisci pariatur!</p>
+        <div id="popup-test" class="popup" style="display: none">
+            <div class="popup__overlay" data-popup-close></div>
+            <div class="popup__wrap">
+                <a href="#" data-popup-close>x</a>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia sunt minima id sequi repudiandae amet
+                    sint sapiente quod at molestias non, autem excepturi aliquam debitis modi sit quidem adipisci
+                    pariatur!
+                </p>
+            </div>
         </div>
-    </div>
-</body>
-
+    </body>
 </html>

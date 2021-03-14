@@ -53,6 +53,6 @@ export const initSymbolSprite = (path, hours) => {
         };
         request.send();
     } catch (e) {
-        alert(`Error: ${e}`);
+        alert(`Error: ${e.message}`);
     }
 };
