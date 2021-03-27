@@ -8,7 +8,7 @@ module.exports = merge(webpackConfiguration, {
     devServer: {
         contentBase: environment.paths.output,
         watchContentBase: true,
-        publicPath: '/',
+        publicPath: environment.paths.assetsPath,
         open: true,
         historyApiFallback: true,
         compress: true,

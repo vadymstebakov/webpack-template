@@ -28,16 +28,17 @@ const optimization = () => {
         splitChunks: {
             chunks: 'all',
             cacheGroups: {
-                defaultVendors: {
+                vendors: {
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10,
                     name: 'vendors',
-                    reuseExistingChunk: true,
+                    chunks: 'initial',
                 },
                 default: {
                     minChunks: 2,
                     priority: -20,
                     reuseExistingChunk: true,
+                    chunks: 'initial',
                 },
             },
         },
@@ -112,6 +113,7 @@ const styleLoaders = () => {
         {
             loader: 'css-loader',
             options: {
+                importLoaders: 2,
                 sourceMap: isDev,
             },
         },
@@ -222,16 +224,12 @@ const plugins = () => {
 module.exports = {
     context: environment.paths.source,
     entry: {
-        app: [
-            '@babel/polyfill',
-            'element-closest-polyfill',
-            path.resolve(environment.paths.source, 'scripts', 'index.js'),
-        ],
+        app: ['element-closest-polyfill', path.resolve(environment.paths.source, 'scripts', 'index.js')],
     },
     output: {
         filename: `scripts/${filename('js')}`,
         path: environment.paths.output,
-        publicPath: '',
+        publicPath: environment.paths.assetsPath,
     },
     optimization: optimization(),
     module: {
@@ -267,5 +265,5 @@ module.exports = {
             '@assets': path.resolve(__dirname, 'src/assets'),
         },
     },
-    target: 'web',
+    target: isProd ? 'browserslist' : 'web',
 };

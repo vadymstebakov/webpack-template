@@ -10,6 +10,7 @@ module.exports = {
         output: path.resolve(__dirname, '../dist/'),
         images: path.resolve(__dirname, '../src/images/'),
         fonts: path.resolve(__dirname, '../src/fonts/'),
+        assetsPath: process.env.ASSET_PATH || '/',
     },
     server: {
         host: ip.address(),
