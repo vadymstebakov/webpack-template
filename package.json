@@ -1,7 +1,6 @@
 {
     "name": "webpack-template",
     "version": "2.0.0",
-    "description": "",
     "private": true,
     "scripts": {
         "dev": "cross-env NODE_ENV=development webpack --config configuration/webpack.dev.config.js --mode=development",
@@ -9,7 +8,7 @@
         "build": "cross-env NODE_ENV=production webpack --config configuration/webpack.prod.config.js --mode=production",
         "stats": "cross-env NODE_ENV=stats webpack --config configuration/webpack.prod.config.js --json > stats.json && webpack-bundle-analyzer stats.json",
         "lint:js": "eslint --ext .js src/scripts/",
-        "lint:sass": "sass-lint \"src/styles/**/*.scss\" -v -q"
+        "lint:scss": "stylelint \"src/styles/**/*.scss\""
     },
     "engines": {
         "node": "^12 || >=14"
@@ -54,6 +53,10 @@
         "sass-lint": "^1.13.1",
         "sass-loader": "^11.0.1",
         "style-loader": "^2.0.0",
+        "stylelint": "^13.13.1",
+        "stylelint-config-prettier": "^8.0.2",
+        "stylelint-config-standard": "^22.0.0",
+        "stylelint-scss": "^3.21.0",
         "terser-webpack-plugin": "^5.1.1",
         "webpack": "^5.28.0",
         "webpack-bundle-analyzer": "^4.4.0",

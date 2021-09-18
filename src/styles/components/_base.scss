@@ -22,8 +22,9 @@ body {
 }
 
 h1 {
-    @include responsive-fz(25, 14, 1199);
     text-align: center;
+
+    @include responsive-fz(25, 14, 1199);
 }
 
 img {

@@ -91,16 +91,6 @@ const templatesHTML = () => {
     );
 };
 
-// SVG Sprite
-const putSVGSprite = () => {
-    return new HTMLWebpackPlugin({
-        filename: 'images/symbol-sprite/symbol-sprite.html',
-        template: path.resolve(environment.paths.images, 'symbol-sprite', 'symbol-sprite.html'),
-        inject: false,
-        minify: isProd || isStats,
-    });
-};
-
 // Style loaders
 const styleLoaders = () => {
     const loaders = [
@@ -211,7 +201,6 @@ const plugins = () => {
                 quality: '60-100',
             },
         }),
-        putSVGSprite(),
         ...templatesHTML(),
     ];
 

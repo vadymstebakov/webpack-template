@@ -13,6 +13,7 @@
     </head>
 
     <body>
+        <%= require('html-loader!./includes/symbol-sprite.html') %>
         <div class="wrap-helper">
             <div class="wrap-helper__inner">
                 <%= require('html-loader!./includes/header.html') %>
@@ -26,7 +27,7 @@
             </div>
             <%= require('html-loader!./includes/footer.html') %>
         </div>
-        <div id="popup-test" class="popup" style="display: none">
+        <div id="popup-test" class="popup" style="display: none;">
             <div class="popup__overlay" data-popup-close></div>
             <div class="popup__wrap">
                 <a href="#" data-popup-close>x</a>
